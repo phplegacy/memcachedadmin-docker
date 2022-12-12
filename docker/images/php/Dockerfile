@@ -94,9 +94,12 @@ ENV PHP_CS_FIXER_FUTURE_MODE=1
 
 USER user
 
-EXPOSE 80
+COPY ./app/ /app/
+RUN set -eux \
+    && composer install --prefer-dist --no-interaction --no-dev --no-progress --optimize-autoloader
 
 # entrypoint init
 COPY --chmod=0755 ./docker/etc/docker-entrypoint.sh /docker-entrypoint.sh
 ENTRYPOINT ["tini", "--", "/docker-entrypoint.sh"]
 CMD ["php-fpm"]
+EXPOSE 80
