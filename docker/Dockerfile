@@ -20,8 +20,7 @@ RUN set -eux \
     # `fcgi` - Healthcheck |  https://github.com/renatomefi/php-fpm-healthcheck
     fcgi \
     # `tini` - https://github.com/krallin/tini
-    tini \
-    supervisor
+    tini
 
 # Easily install PHP extension in Docker containers | https://github.com/mlocati/docker-php-extension-installer
 RUN set -eux \
@@ -66,7 +65,6 @@ COPY ./docker/config/php/zzz-php_dev_custom.ini /usr/local/etc/php/conf.d/zzz-ph
 COPY ./docker/config/php/php-fpm.d/zzz-php-fpm_dev_custom.conf /usr/local/etc/php-fpm.d/zzz-php-fpm_custom.conf
 COPY ./docker/config/composer/composer-allow-plugins.json /root/.composer/composer.json
 COPY --chown=user:user ./docker/config/composer/composer-allow-plugins.json ${HOME}/.composer/composer.json
-COPY ./docker/config/supervisor/supervisord.conf /etc/supervisord.conf
 
 RUN set -eux \
     && caddy fmt --overwrite /etc/caddy/Caddyfile
