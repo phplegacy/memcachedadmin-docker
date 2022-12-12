@@ -50,8 +50,8 @@ class App
         'time_zone' => 'UTC',
         'servers' => [
             'Default' => [
-                '127.0.0.1:11211' => [
-                    'hostname' => '127.0.0.1',
+                'memcached:11211' => [
+                    'hostname' => 'memcached',
                     'port' => 11211
                 ]
             ]
@@ -133,7 +133,7 @@ class App
     public function tempDirPath(): string
     {
         if (!$this->realTempDirPath) {
-            $this->realTempDirPath = realpath(__DIR__ .'/../..'. $this->config['temp_dir_path']);
+            $this->realTempDirPath = realpath(__DIR__ .'/..'. $this->config['temp_dir_path']);
         }
 
         return $this->realTempDirPath;
@@ -212,7 +212,7 @@ class App
     public function configFilePath(): string
     {
         if (!$this->realConfigFilePath) {
-            $this->realConfigFilePath = realpath(__DIR__ .'/../..'. $this->configFilePath);
+            $this->realConfigFilePath = realpath(__DIR__ .'/..'. $this->configFilePath);
         }
 
         return $this->realConfigFilePath;

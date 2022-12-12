@@ -3,7 +3,7 @@ use App\Library\Html\Components;
 ?>
 <script type="text/javascript">
     var timeout = <?php echo $refresh_rate * 1000; ?>;
-    var page = '/stats?request_command=live_stats&cluster=<?php echo $cluster; ?>';
+    var page = '/stats/?request_command=live_stats&cluster=<?php echo $cluster; ?>';
     setTimeout("ajax(page,'stats')", <?php echo (5 + $refresh_rate - $_ini->get('refresh_rate')) * 1000; ?>);
 </script>
 
@@ -21,7 +21,14 @@ use App\Library\Html\Components;
     }  ?>
     <div class="full-size padding">
         <br/>
-        <span class="live">Actually looking at <?php echo Components::clusterSelect('cluster_select', (isset($_REQUEST['cluster'])) ? $_REQUEST['cluster'] : '', 'live', 'onchange="changeCluster(this);"'); ?> stats</span>
+        <div style="margin: 10px 0;">
+            Select cluster: <?= Components::serverSelect(
+                'server_select',
+                $_REQUEST['server'] ?? null,
+                'list',
+                'onchange="changeServer(this)"'
+            ); ?>
+        </div>
 
         <pre id="stats" class="live">
 

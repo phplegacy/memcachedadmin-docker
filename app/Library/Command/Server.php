@@ -556,9 +556,11 @@ class Server implements CommandInterface
             unset($slabs[$slab]);
         }
 
-        if (is_array($items)) {
-            sort($items);
+        if (!is_array($items)) {
+            return [];
         }
+
+        sort($items);
 
         return $items;
     }

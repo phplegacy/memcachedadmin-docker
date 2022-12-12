@@ -129,7 +129,7 @@ switch ($request) {
             $settings = Factory::instance('stats_api')->settings($server['hostname'], $server['port']);
         }
 
-        # Stats are well formed
+        # Stats are well-formed
         if (($stats !== false) && ($stats != array())) {
             # Analysis
             $stats = Analysis::stats($stats);

@@ -101,12 +101,12 @@ function executeClear(target) {
 }
 function executeCommand(target, params) {
 	if (params != null) {
-		const request_url = '/commands?' + params;
+		const request_url = '/commands/?' + params;
 		execute(request_url, target, true);
 		return;
 	}
 	if (document.getElementById('request_command').value !== '') {
-		const request_url = '/commands?request_command='
+		const request_url = '/commands/?request_command='
 				+ document.getElementById('request_command').value
 				+ '&request_key='
 				+ document.getElementById('request_key').value
@@ -127,7 +127,7 @@ function executeCommand(target, params) {
 }
 function searchKey(target) {
 	if (document.getElementById('search_key').value !== '') {
-		const request_url = '/commands?request_command=search'
+		const request_url = '/commands/?request_command=search'
 				+ '&request_key=' + document.getElementById('search_key').value
 				+ '&request_level=' + document.getElementById('search_level').value
 				+ '&request_more=' + document.getElementById('search_more').value
@@ -138,7 +138,7 @@ function searchKey(target) {
 }
 function executeTelnet(target) {
 	if (document.getElementById('request_telnet').value !== '') {
-		const request_url = '/commands?request_command=telnet'
+		const request_url = '/commands/?request_command=telnet'
 				+ '&request_telnet='
 				+ document.getElementById('request_telnet').value
 				+ '&request_server='

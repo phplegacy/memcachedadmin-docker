@@ -130,7 +130,7 @@ switch ($request) {
         file_put_contents($filePath, serialize($actual));
 
         # Showing stats
-        require __DIR__ .'/../../view/liveStats/stats.php';
+        require __DIR__ .'/../../view/livestats/stats.php';
         break;
 
     # Default : No command
