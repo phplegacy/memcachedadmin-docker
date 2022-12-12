@@ -46,7 +46,6 @@ class App
         'memory_alert' => 80,
         'hit_rate_alert' => 90,
         'eviction_alert' => 0,
-        'time_zone' => 'UTC',
         'servers' => [
             'Default' => [
                 'memcached:11211' => [
@@ -231,37 +230,4 @@ class App
         return is_writable($configFilePath);
     }
 
-    /**
-     * Check if every ini keys are set
-     * Return true if ini is correct, false otherwise
-     *
-     * @return boolean
-     */
-    public function check(): bool
-    {
-        # Checking configuration keys
-        foreach (array_keys($this->defaultConfig) as $iniKey) {
-            # Ini file key not set
-            if (isset($this->config[$iniKey]) === false) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Write ini file
-     * Return true if written, false otherwise
-     *
-     * @return boolean
-     */
-    public function write(): bool
-    {
-        if ($this->check()) {
-            $php = '<?php' . PHP_EOL . 'return ' . var_export($this->config, true) . ';';
-            $res = file_put_contents($this->configFilePath, $php);
-            return is_numeric($res);
-        }
-        return false;
-    }
 }
