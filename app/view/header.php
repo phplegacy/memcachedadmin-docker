@@ -28,12 +28,6 @@ echo '<?xml version="1.0" encoding="UTF-8"?>'; ?>
         <?php exit('<div class="header corner full-size padding" style="margin-top:10px;">Error: Temporary directory <em>"'. App::getInstance()->tempDirPath() .'"</em> is not writable.</div>'); ?>
     <?php } ?>
 
-    <?php if (!App::getInstance()->exists()) { ?>
-        <?php exit('<div class="header corner full-size padding" style="margin-top:10px;">Error: Configuration file <em>"'. App::getInstance()->configFilePath() .'"</em> is missing.</div>'); ?>
-    <?php } elseif (!App::getInstance()->isWritable()) { ?>
-        <?php exit('<div class="header corner full-size padding" style="margin-top:10px;">Error: Configuration file <em>"'. App::getInstance()->configFilePath() .'"</em> is not writable.</div>'); ?>
-    <?php } ?>
-
 <!--[if IE]>
     <div class="header corner full-size padding" style="text-align:center;margin-top:10px;">
     Support browsers that contribute to open source, try <a href="https://www.firefox.com" target="_blank">Firefox</a> or <a href="https://www.google.com/chrome" target="_blank">Google Chrome</a>.

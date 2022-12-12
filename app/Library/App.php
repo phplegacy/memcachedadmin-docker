@@ -24,6 +24,8 @@ namespace App\Library;
 
 class App
 {
+    protected const DEFAULT_PORT = 11211;
+
     /**
      * @var null Singleton
      */
@@ -64,16 +66,6 @@ class App
     /**
      * @var string
      */
-    protected $configFilePath = '/.config.php';
-
-    /**
-     * @var string
-     */
-    protected $realConfigFilePath;
-
-    /**
-     * @var string
-     */
     protected $realTempDirPath;
 
     /**
@@ -81,19 +73,10 @@ class App
      *
      * @return Void
      */
-    protected function __construct(string $configFilePath = null)
+    protected function __construct()
     {
-        if ($configFilePath) {
-            $this->configFilePath = $configFilePath;
-        }
-
         $this->config = $this->defaultConfig;
-
-        if ($this->exists()) {
-            $configFilePath = $this->configFilePath();
-            $userConfig = require($configFilePath);
-            $this->config = array_merge($this->config, $userConfig);
-        }
+        $this->config['servers'] = $this->getServersConfig();
     }
 
     /**
@@ -107,6 +90,30 @@ class App
             self::$_instance = new self();
         }
         return self::$_instance;
+    }
+
+    private function getServersConfig(): array
+    {
+        $defaultServers = $this->defaultConfig['servers'];
+        $serverEnv = getenv('SERVER');
+
+        if (!$serverEnv) {
+            return $defaultServers;
+        }
+
+        $serverEnv = explode(':', $serverEnv);
+
+        $hostname = $serverEnv[0];
+        $port = $serverEnv[1] ?? static::DEFAULT_PORT;
+
+        return [
+            'Default' => [
+                $hostname.':'.$port => [
+                    'hostname' => $hostname,
+                    'port' => $port
+                ]
+            ]
+        ];
     }
 
     /**
@@ -200,34 +207,5 @@ class App
         $this->config[$key] = $value;
     }
 
-    /**
-     * @return string
-     */
-    public function configFilePath(): string
-    {
-        if (!$this->realConfigFilePath) {
-            $this->realConfigFilePath = realpath(__DIR__ .'/..'. $this->configFilePath);
-        }
-
-        return $this->realConfigFilePath;
-    }
-
-    /**
-     * @return bool
-     */
-    public function exists(): bool
-    {
-        $configFilePath = $this->configFilePath();
-        return is_file($configFilePath);
-    }
-
-    /**
-     * @return bool
-     */
-    public function isWritable(): bool
-    {
-        $configFilePath = $this->configFilePath();
-        return is_writable($configFilePath);
-    }
 
 }

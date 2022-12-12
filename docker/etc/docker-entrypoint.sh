@@ -13,20 +13,17 @@ export NUM_CPUS=`nproc`
 for f in /docker-entrypoint.init.d/*; do
     case "$f" in
         *.sh) # this should match the set of files we check for below
-            echo "⚙️ Executing entrypoint.init file: ${f}"
+            echo "⚙	 Executing entrypoint.init file: ${f}"
             . $f
             break
             ;;
     esac
 done
 
-if [ "$1" = 'supervisor' ]; then
-    EXEC="/usr/bin/supervisord -c /etc/supervisord.conf"
+printf "\n${GRN}--->${NC} 	🚀️️	 Welcome to ${GRN}PHPLegacy PHPMemcachedAdmin${NC} container..."
+printf "\n${GRN}--->${NC} Docker image build date: ${GRN}${BUILD_DATE}${NC}, fingerprint: ${GRN}${BUILD_FINGERPRINT}${NC}"
+printf "\n${GRN}--->${NC} Subscribe to project updates: ${GRN}https://github.com/phplegacy/phpmemcachedadmin${NC}\n\n"
 
-    printf "\n${GRN}---> 🚀 Starting PHP Legacy container...${NC}"
-    printf "\n---> Exec command: ${EXEC}"
-
-    exec ${EXEC}
-fi
+caddy start --adapter caddyfile --config /etc/caddy/Caddyfile
 
 exec "$@"

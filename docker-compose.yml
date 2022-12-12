@@ -30,16 +30,6 @@ services:
     networks:
       - network1
 
-  memcached2:
-    container_name: 'memcached2'
-    image: 'memcached:1.6'
-    tty: true
-    restart: unless-stopped
-    environment:
-      - 'TZ=UTC'
-    networks:
-      - network1
-
 networks:
   network1:
     driver: bridge
