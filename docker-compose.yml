@@ -1,9 +1,25 @@
 version: "3"
+
 services:
-    phpmemcachedadmin:
-        image: "php:7.4.33-apache"
-        volumes:
-            - "./:/var/www/"
-            - "./docker/apache2/000-default.conf:/etc/apache2/sites-enabled/000-default.conf:ro"
-        ports:
-            - "80:80"
+  phpmemcachedadmin:
+    container_name: 'phpmemcachedadmin'
+    build:
+      dockerfile: ./docker/images/php/Dockerfile
+      context: ./
+      args:
+        - BUILDKIT_INLINE_CACHE=1
+    tty: true
+    ports:
+      - '8080:80'
+    restart: unless-stopped
+    environment:
+      - 'TZ=UTC'
+      - 'COMPOSE_CONVERT_WINDOWS_PATHS=1'
+    volumes:
+      - './app/:/app/'
+    networks:
+      - network1
+
+networks:
+  network1:
+    driver: bridge

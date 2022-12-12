@@ -15,10 +15,10 @@
     ],
     "autoload": {
         "files": [
-            "src/helpers.php"
+          "helpers.php"
         ],
         "psr-4": {
-            "App\\": "./src"
+            "App\\": "./"
         }
     },
     "require": {

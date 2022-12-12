@@ -5,7 +5,7 @@ use App\Library\App;
 # App.'s hard-coded configuration
 const CURRENT_VERSION = '2.0.0';
 
-require __DIR__ .'/../vendor/autoload.php';
+require __DIR__ .'/vendor/autoload.php';
 
 ob_start();
 

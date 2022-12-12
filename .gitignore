@@ -1,6 +1,3 @@
-/.idea/
-/vendor/
-/.config.php
-/docker-compose.override.yml
-/temp/*
-/html/
+/.vscode
+/.idea
+/app/vendor/
