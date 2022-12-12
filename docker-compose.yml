@@ -4,7 +4,7 @@ services:
   phpmemcachedadmin:
     container_name: 'phpmemcachedadmin'
     build:
-      dockerfile: ./docker/images/php/Dockerfile
+      dockerfile: ./docker/images/Dockerfile
       context: ./
       args:
         - BUILDKIT_INLINE_CACHE=1
