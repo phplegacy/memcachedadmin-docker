@@ -28,7 +28,7 @@ use App\Library\Command\Server;
 
 require_once __DIR__ .'/../../bootstrap.php';
 
-$requestServer = $_GET['server'] ? trim($_GET['server']) : null;
+$requestServer = isset($_GET['server']) ? trim($_GET['server']) : null;
 if ($requestServer) {
     $app = App::getInstance();
     $serverConfig = $app->server($requestServer);

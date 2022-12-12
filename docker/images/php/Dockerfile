@@ -15,17 +15,12 @@ RUN set -eux \
   && apk add --quiet --update --no-cache \
     bash \
     tzdata \
-    mc \
-    unzip \
     iputils \
     curl \
-    make \
     # `fcgi` - Healthcheck |  https://github.com/renatomefi/php-fpm-healthcheck
     fcgi \
     # `tini` - https://github.com/krallin/tini
     tini \
-    # `figlet` is just for fun
-    figlet \
     supervisor
 
 # Easily install PHP extension in Docker containers | https://github.com/mlocati/docker-php-extension-installer
@@ -34,12 +29,13 @@ RUN set -eux \
     && chmod +x /usr/local/bin/install-php-extensions \
     && IPE_GD_WITHOUTAVIF=1 install-php-extensions \
         @composer-2 \
-        opcache
+        opcache \
+        memcache \
+        memcached
 
 # Caddy | https://caddyserver.com/
 COPY --from=caddy:2-alpine /usr/bin/caddy /usr/local/bin/caddy
 RUN set -eux \
-    && setcap 'cap_net_bind_service=+ep' /usr/local/bin/caddy \
     && caddy version
 
 # Healthcheck |  https://github.com/renatomefi/php-fpm-healthcheck

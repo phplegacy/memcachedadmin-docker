@@ -46,7 +46,7 @@ class Memcache implements CommandInterface
         self::$_ini = App::getInstance();
 
         # Initializing
-        self::$_memcache = new Memcache();
+        self::$_memcache = new \Memcache();
     }
 
     /**

@@ -37,7 +37,7 @@ class Memcached implements CommandInterface
     public function __construct()
     {
         # Initializing
-        self::$_memcache = new Memcached();
+        self::$_memcache = new \Memcached();
     }
 
     /**

@@ -46,7 +46,6 @@ class App
         'memory_alert' => 80,
         'hit_rate_alert' => 90,
         'eviction_alert' => 0,
-        'temp_dir_path' => '/temp/',
         'time_zone' => 'UTC',
         'servers' => [
             'Default' => [
@@ -133,7 +132,7 @@ class App
     public function tempDirPath(): string
     {
         if (!$this->realTempDirPath) {
-            $this->realTempDirPath = realpath(__DIR__ .'/..'. $this->config['temp_dir_path']);
+            $this->realTempDirPath = sys_get_temp_dir();
         }
 
         return $this->realTempDirPath;
@@ -199,10 +198,6 @@ class App
      */
     public function set(string $key, $value)
     {
-        if ($key === 'temp_dir_path') {
-            $this->realTempDirPath = null;
-        }
-
         $this->config[$key] = $value;
     }
 
