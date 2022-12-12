@@ -15,8 +15,8 @@ services:
     environment:
       - 'TZ=UTC'
       - 'SERVER=memcached:11211'
-    volumes:
-      - './app/:/app/'
+#    volumes:
+#      - './app/:/app/'
     networks:
       - network1
 

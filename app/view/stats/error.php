@@ -23,7 +23,7 @@ if((isset($stats)) && (($stats === false) || ($stats == array())))
         <?php echo Errors::last(); ?>
         <br/>
         <br/>
-        Please check above error message, your <a href="configure.php" class="green">configuration</a> or your server status and retry
+        Please check above error message, your configuration or your server status and retry
     </div>
 <?php
 }
@@ -37,7 +37,7 @@ elseif((isset($slabs)) && ($slabs === false))
     <div class="container corner full-size padding">
         <span class="left">Error message</span>
         <br/>
-        Maybe this server is not used, check your <a href="configure.php" class="green">configuration</a> or your server status and retry
+        Maybe this server is not used, check your configuration or your server status and retry
     </div>
 <?php
 }
