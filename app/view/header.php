@@ -19,7 +19,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>'; ?>
     </div>
 
     <div class="header corner full-size padding" style="margin-top:5px;">
-        <a href="/">See Stats</a> | <a href="/stats">See Live Stats</a> | <a href="/commands">Execute Commands</a> | <a href="/configure">Edit Configuration</a> | <a href="/data">Data</a>
+        <a href="/">See Stats</a> | <a href="/stats">See Live Stats</a> | <a href="/commands">Execute Commands</a> | <a href="/data">Data</a>
     </div>
 
     <?php if (!App::getInstance()->isTempDirExists()) { ?>
