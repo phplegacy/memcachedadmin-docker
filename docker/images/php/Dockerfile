@@ -35,7 +35,9 @@ RUN set -eux \
 
 # Caddy | https://caddyserver.com/
 COPY --from=caddy:2-alpine /usr/bin/caddy /usr/local/bin/caddy
+COPY ./docker/config/caddy/Caddyfile /etc/caddy/Caddyfile
 RUN set -eux \
+    && caddy fmt --overwrite /etc/caddy/Caddyfile \
     && caddy version
 
 # Healthcheck |  https://github.com/renatomefi/php-fpm-healthcheck
@@ -43,7 +45,7 @@ RUN set -eux \
     && curl -fsSL https://raw.githubusercontent.com/renatomefi/php-fpm-healthcheck/master/php-fpm-healthcheck --output /usr/local/bin/php-fpm-healthcheck \
     && chmod +x /usr/local/bin/php-fpm-healthcheck \
     && echo "pm.status_path = /status" >> /usr/local/etc/php-fpm.d/zz-docker.conf
-HEALTHCHECK --start-period=30s CMD php-fpm-healthcheck || exit 1
+HEALTHCHECK --interval=1m --start-period=10s CMD (curl --fail http://localhost/styles/style.css && php-fpm-healthcheck) || exit 1
 
 # set bash as a default shell
 RUN set -eux \
@@ -65,13 +67,27 @@ COPY ./docker/config/php/php-fpm.d/zzz-php-fpm_dev_custom.conf /usr/local/etc/ph
 COPY ./docker/config/composer/composer-allow-plugins.json /root/.composer/composer.json
 COPY --chown=user:user ./docker/config/composer/composer-allow-plugins.json ${HOME}/.composer/composer.json
 COPY ./docker/config/supervisor/supervisord.conf /etc/supervisord.conf
-COPY ./docker/config/caddy/Caddyfile /etc/caddy/Caddyfile
 
 RUN set -eux \
     && caddy fmt --overwrite /etc/caddy/Caddyfile
 
+LABEL org.opencontainers.image.title="PHPMemcachedAdmin Docker image" \
+    org.opencontainers.image.description="PHPLegacy PHPMemcachedAdmin Docker image" \
+    org.opencontainers.image.authors="https://github.com/phplegacy/phpmemcachedadmin" \
+    org.opencontainers.image.documentation="https://github.com/phplegacy/phpmemcachedadmin" \
+    org.opencontainers.image.url="https://github.com/phplegacy/phpmemcachedadmin" \
+    org.opencontainers.image.source="https://github.com/phplegacy/phpmemcachedadmin"
+
 ARG TZ='UTC'
 ENV TZ=$TZ
+
+#These params meant to be set by CI
+ARG BUILD_DATE
+ENV BUILD_DATE=$BUILD_DATE
+RUN echo $BUILD_DATE
+ARG BUILD_FINGERPRINT
+ENV BUILD_FINGERPRINT=$BUILD_FINGERPRINT
+RUN echo $BUILD_FINGERPRINT
 
 # https://cs.symfony.com/doc/usage.html
 ENV PHP_CS_FIXER_FUTURE_MODE=1
@@ -83,4 +99,4 @@ EXPOSE 80
 # entrypoint init
 COPY --chmod=0755 ./docker/etc/docker-entrypoint.sh /docker-entrypoint.sh
 ENTRYPOINT ["tini", "--", "/docker-entrypoint.sh"]
-CMD ["supervisor"]
+CMD ["php-fpm"]

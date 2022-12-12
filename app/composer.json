@@ -1,6 +1,7 @@
 {
-    "name": "alexeyplodenko/phpmemcachedadmin",
+    "name": "phplegacy/phpmemcachedadmin",
     "description": "Graphic stand-alone administration for MemcacheD",
+    "homepage": "https://github.com/phplegacy/phpmemcachedadmin",
     "type": "library",
     "license": "Apache-2.0",
     "authors": [
@@ -11,6 +12,10 @@
         {
             "name": "Alexey Plodenko",
             "email": "alexey@plodenko.com"
+        },
+        {
+          "name": "PHPLegacy",
+          "homepage": "https://github.com/phplegacy/phpmemcachedadmin"
         }
     ],
     "autoload": {
