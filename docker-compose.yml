@@ -3,7 +3,7 @@ version: "3"
 services:
   memcachedadmin:
     container_name: 'memcachedadmin'
-    image: 'legacyphp/phpmemcachedadmin:latest'
+    image: 'legacyphp/memcachedadmin:latest'
     tty: true
     ports:
       - '8080:80'
