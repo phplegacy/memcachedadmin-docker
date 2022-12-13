@@ -66,8 +66,8 @@ jobs:
             BUILD_DATE=${{ env.BUILD_DATE }}
             BUILD_FINGERPRINT=${{ env.BUILD_FINGERPRINT }}
           tags: |
-            legacyphp/phpmemcachedadmin:latest
-            ghcr.io/phplegacy/phpmemcachedadmin:latest
+            legacyphp/memcachedadmin:latest
+            ghcr.io/phplegacy/memcachedadmin-docker:latest
           pull: true
           push: true
 
@@ -87,5 +87,5 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
-          repository: legacyphp/phpmemcachedadmin
+          repository: legacyphp/memcachedadmin
           #short-description: ${{ github.event.repository.description }}

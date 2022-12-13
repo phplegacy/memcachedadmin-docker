@@ -15,7 +15,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>'; ?>
 <div style="margin:0pt auto; width:1000px; clear:both;">
     <div style="font-weight:bold;font-size:1.2em; margin: 0 4px 4px">
         <span style="float:left"><a href="/" style="color: #000;">PHPMemcachedAdmin</a> <sup><?php echo CURRENT_VERSION; ?></sup></span>
-        <span style="float:right"><a href="https://github.com/phplegacy/phpmemcachedadmin" style="color: #514845;">PHPLegacy</a></span>
+        <span style="float:right"><a href="https://github.com/phplegacy/memcachedadmin-docker" style="color: #514845;">PHPLegacy</a></span>
     </div>
 
     <div class="header corner full-size padding" style="margin-top:5px;">

@@ -1,7 +1,7 @@
 {
-    "name": "phplegacy/phpmemcachedadmin",
+    "name": "phplegacy/memcachedadmin-docker",
     "description": "Graphic stand-alone administration for MemcacheD",
-    "homepage": "https://github.com/phplegacy/phpmemcachedadmin",
+    "homepage": "https://github.com/phplegacy/memcachedadmin-docker",
     "type": "library",
     "license": "Apache-2.0",
     "authors": [
@@ -15,7 +15,7 @@
         },
         {
           "name": "PHPLegacy",
-          "homepage": "https://github.com/phplegacy/phpmemcachedadmin"
+          "homepage": "https://github.com/phplegacy/memcachedadmin-docker"
         }
     ],
     "autoload": {

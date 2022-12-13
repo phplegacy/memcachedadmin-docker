@@ -1,3 +1,4 @@
 * text=auto eol=lf
 /.github export-ignore
+/docs export-ignore
 /composer.lock -diff

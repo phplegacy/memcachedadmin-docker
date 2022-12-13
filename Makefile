@@ -1,11 +1,13 @@
 THIS_FILE := $(abspath $(lastword $(MAKEFILE_LIST)))
 CURRENT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
+export COMPOSE_FILE=docker-compose-dev.yml
+export COMPOSE_PROJECT_NAME=memcachedadmin-dev
 
 up:
 	docker-compose up --build --no-deps --detach --remove-orphans
 
 down:
-	docker-compose down  --remove-orphans
+	docker-compose down --remove-orphans
 
 stop:
 	docker-compose stop
@@ -24,4 +26,4 @@ logs: ## Show docker logs
 	docker-compose logs -f --tail=100 $(ARGS)
 
 php:
-	docker-compose exec phpmemcachedadmin bash
+	docker-compose exec memcachedadmin bash

@@ -69,12 +69,12 @@ COPY --chown=user:user ./docker/config/composer/composer-allow-plugins.json ${HO
 RUN set -eux \
     && caddy fmt --overwrite /etc/caddy/Caddyfile
 
-LABEL org.opencontainers.image.title="PHPMemcachedAdmin Docker image" \
-    org.opencontainers.image.description="PHPLegacy PHPMemcachedAdmin Docker image" \
-    org.opencontainers.image.authors="https://github.com/phplegacy/phpmemcachedadmin" \
-    org.opencontainers.image.documentation="https://github.com/phplegacy/phpmemcachedadmin" \
-    org.opencontainers.image.url="https://github.com/phplegacy/phpmemcachedadmin" \
-    org.opencontainers.image.source="https://github.com/phplegacy/phpmemcachedadmin"
+LABEL org.opencontainers.image.title="MemcachedAdmin Docker image" \
+    org.opencontainers.image.description="PHPLegacy MemcachedAdmin Docker image" \
+    org.opencontainers.image.authors="https://github.com/phplegacy/memcachedadmin-docker" \
+    org.opencontainers.image.documentation="https://github.com/phplegacy/memcachedadmin-docker" \
+    org.opencontainers.image.url="https://github.com/phplegacy/memcachedadmin-docker" \
+    org.opencontainers.image.source="https://github.com/phplegacy/memcachedadmin-docker"
 
 ARG TZ='UTC'
 ENV TZ=$TZ

@@ -3,11 +3,17 @@ version: "3"
 services:
   memcachedadmin:
     container_name: 'memcachedadmin'
-    image: 'legacyphp/phpmemcachedadmin:latest'
+    build:
+      dockerfile: ./docker/Dockerfile
+      context: ./
+      args:
+        - BUILDKIT_INLINE_CACHE=1
     tty: true
     ports:
       - '8080:80'
     restart: unless-stopped
+    volumes:
+      - './app/:/app/'
     environment:
       - 'TZ=UTC'
       - 'SERVER=memcached:11211'

@@ -1,4 +1,4 @@
-# PHPMemcachedAdmin #
+# MemcachedAdmin #
 
 ## Fork
 

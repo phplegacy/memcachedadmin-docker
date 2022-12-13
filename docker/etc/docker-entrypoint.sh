@@ -20,9 +20,9 @@ for f in /docker-entrypoint.init.d/*; do
     esac
 done
 
-printf "\n${GRN}--->${NC} 	🚀️️	 Welcome to ${GRN}PHPLegacy PHPMemcachedAdmin${NC} container..."
+printf "\n${GRN}--->${NC} 	🚀️️	 Welcome to ${GRN}PHPLegacy MemcachedAdmin${NC} container..."
 printf "\n${GRN}--->${NC} Docker image build date: ${GRN}${BUILD_DATE}${NC}, fingerprint: ${GRN}${BUILD_FINGERPRINT}${NC}"
-printf "\n${GRN}--->${NC} Subscribe to project updates: ${GRN}https://github.com/phplegacy/phpmemcachedadmin${NC}\n\n"
+printf "\n${GRN}--->${NC} Subscribe to project updates: ${GRN}https://github.com/phplegacy/memcachedadmin-docker${NC}\n\n"
 
 caddy start --adapter caddyfile --config /etc/caddy/Caddyfile
 
