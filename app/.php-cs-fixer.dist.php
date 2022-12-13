@@ -1,0 +1,81 @@
+<?php
+/*
+ * This document has been generated with
+ * https://mlocati.github.io/php-cs-fixer-configurator/#version:3.12.0|configurator
+ * you can change this configuration by importing this file.
+ */
+$config = new PhpCsFixer\Config();
+return $config
+    ->setRiskyAllowed(true)
+    /** @see https://github.com/kubawerlos/php-cs-fixer-custom-fixers */
+    ->registerCustomFixers(new PhpCsFixerCustomFixers\Fixers())
+    ->setRules([
+        '@PSR12' => true,
+        '@PhpCsFixer' => true,
+        '@Symfony' => true,
+        // Escape implicit backslashes in strings and heredocs to ease the understanding of which are special chars interpreted by PHP and which not.
+        'escape_implicit_backslashes' => false,
+        // Transforms imported FQCN parameters and return types in function arguments to short version.
+        'fully_qualified_strict_types' => false,
+        // Heredoc/nowdoc content must be properly indented. Requires PHP >= 7.3.
+        'heredoc_indentation' => true,
+        // Lambda must not import variables it doesn't use.
+        'lambda_not_used_import' => false,
+        // List (`array` destructuring) assignment should be declared using the configured syntax. Requires PHP >= 7.1.
+        'list_syntax' => true,
+        // Replaces `intval`, `floatval`, `doubleval`, `strval` and `boolval` function calls with according type casting operator.
+        'modernize_types_casting' => true,
+        // DocBlocks must start with two asterisks, multiline comments must start with a single asterisk, after the opening slash. Both must end with a single asterisk before the closing slash.
+        'multiline_comment_opening_closing' => false,
+        // There should not be useless `else` cases.
+        'no_useless_else' => false,
+        // There should not be an empty `return` statement at the end of a function.
+        'no_useless_return' => false,
+        // PHPDoc summary should end in either a full stop, exclamation mark, or question mark.
+        'phpdoc_summary' => false,
+        // Converts `protected` variables and methods to `private` where possible.
+        'protected_to_private' => false,
+        // Local, dynamic and directly referenced variables should not be assigned and directly returned by a function or method.
+        'return_assignment' => false,
+        // Use `null` coalescing operator `??` where possible. Requires PHP >= 7.0.
+        'ternary_to_null_coalescing' => true,
+        // Write conditions in Yoda style (`true`), non-Yoda style (`['equal' => false, 'identical' => false, 'less_and_greater' => false]`) or ignore those conditions (`null`) based on configuration.
+        'yoda_style' => false,
+        // Comments must be surrounded by spaces.
+        PhpCsFixerCustomFixers\Fixer\CommentSurroundedBySpacesFixer::name() => true,
+        // Constructor's empty braces must be single line.
+        PhpCsFixerCustomFixers\Fixer\ConstructorEmptyBracesFixer::name() => true,
+        // There can be no imports from the global namespace.
+        PhpCsFixerCustomFixers\Fixer\NoImportFromGlobalNamespaceFixer::name() => true,
+        // Trailing comma in the list on the same line as the end of the block must be removed.
+        PhpCsFixerCustomFixers\Fixer\NoTrailingCommaInSinglelineFixer::name() => true,
+        // There must be no useless parentheses.
+        PhpCsFixerCustomFixers\Fixer\NoUselessParenthesisFixer::name() => true,
+        // The strlen or mb_strlen functions should not be compared against 0.
+        PhpCsFixerCustomFixers\Fixer\NoUselessStrlenFixer::name() => true,
+        // Generic array style should be used in PHPDoc.
+        PhpCsFixerCustomFixers\Fixer\PhpdocArrayStyleFixer::name() => true,
+        // The @var annotations must be used correctly in code.
+        PhpCsFixerCustomFixers\Fixer\PhpdocNoIncorrectVarAnnotationFixer::name() => true,
+        // There must be no superfluous parameters in PHPDoc.
+        PhpCsFixerCustomFixers\Fixer\PhpdocNoSuperfluousParamFixer::name() => true,
+        // The @param annotations must be in the same order as the function parameters.
+        PhpCsFixerCustomFixers\Fixer\PhpdocParamOrderFixer::name() => true,
+        // The @var annotations must be on a single line if they are the only content.
+        PhpCsFixerCustomFixers\Fixer\PhpdocSingleLineVarFixer::name() => true,
+        // PHPDoc types commas must not be preceded by whitespace, and must be succeeded by single whitespace.
+        PhpCsFixerCustomFixers\Fixer\PhpdocTypesCommaSpacesFixer::name() => true,
+        // PHPDoc types must be trimmed.
+        PhpCsFixerCustomFixers\Fixer\PhpdocTypesTrimFixer::name() => true,
+        // Statements not followed by a semicolon must be followed by a single space.
+        PhpCsFixerCustomFixers\Fixer\SingleSpaceAfterStatementFixer::name() => true,
+        // Statements not preceded by a line break must be preceded by a single space.
+        PhpCsFixerCustomFixers\Fixer\SingleSpaceBeforeStatementFixer::name() => true,
+        // A class that implements the __toString () method must explicitly implement the Stringable interface.
+        PhpCsFixerCustomFixers\Fixer\StringableInterfaceFixer::name() => true,
+
+    ])
+    ->setFinder(PhpCsFixer\Finder::create()
+        ->in(__DIR__)
+        ->exclude(__DIR__ . '/vendor')
+    );

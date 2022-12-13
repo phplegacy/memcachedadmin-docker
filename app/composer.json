@@ -27,6 +27,7 @@
         "php": ">=7.4"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.13"
+        "friendsofphp/php-cs-fixer": "^3.13",
+        "kubawerlos/php-cs-fixer-custom-fixers": "^3.11"
     }
 }
