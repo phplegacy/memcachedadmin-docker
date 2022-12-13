@@ -18,17 +18,15 @@
  * Sending command to memcache server via PECL memcache API http://pecl.php.net/package/memcache
  *
  * @author elijaa@free.fr
+ *
  * @since 20/03/2010
  */
-namespace App\Library\Command;
 
-use Exception;
+namespace App\Library\Command;
 
 class Memcached implements CommandInterface
 {
-    /**
-     * @var Memcached
-     */
+    /** @var Memcached */
     private static $_memcache;
 
     /**
@@ -36,7 +34,7 @@ class Memcached implements CommandInterface
      */
     public function __construct()
     {
-        # Initializing
+        // Initializing
         self::$_memcache = new \Memcached();
     }
 
@@ -45,21 +43,21 @@ class Memcached implements CommandInterface
      * Return the result if successful or false otherwise
      *
      * @param string $server Hostname
-     * @param integer $port Hostname Port
+     * @param int    $port   Hostname Port
      *
-     * @return array|boolean
+     * @return array|bool
      */
     public function stats($server, $port)
     {
-        # Adding server
+        // Adding server
         self::$_memcache->addServer($server, $port);
 
-        # Executing command
-        if (($return = self::$_memcache->getStats())) {
-            # Delete server key based
-            $stats = $return[$server . ':' . $port];
+        // Executing command
+        if ($return = self::$_memcache->getStats()) {
+            // Delete server key based
+            $stats = $return[$server.':'.$port];
 
-            # Adding value that miss
+            // Adding value that miss
             $stats['delete_hits'] = '';
             $stats['delete_misses'] = '';
             $stats['incr_hits'] = '';
@@ -72,6 +70,7 @@ class Memcached implements CommandInterface
 
             return $stats;
         }
+
         return false;
     }
 
@@ -80,9 +79,9 @@ class Memcached implements CommandInterface
      * Return the result if successful or false otherwise
      *
      * @param string $server Hostname
-     * @param integer $port Hostname Port
+     * @param int    $port   Hostname Port
      *
-     * @return boolean
+     * @return bool
      */
     public function settings($server, $port)
     {
@@ -94,14 +93,15 @@ class Memcached implements CommandInterface
      * Return the result if successful or false otherwise
      *
      * @param string $server Hostname
-     * @param integer $port Hostname Port
+     * @param int    $port   Hostname Port
      *
-     * @return array|boolean
-     * @throws Exception
+     * @return array|bool
+     *
+     * @throws \Exception
      */
     public function slabs($server, $port)
     {
-        throw new Exception('PECL Memcache does not support slabs stats, use Server or Memcache instead');
+        throw new \Exception('PECL Memcache does not support slabs stats, use Server or Memcache instead');
     }
 
     /**
@@ -109,15 +109,16 @@ class Memcached implements CommandInterface
      * Return the result if successful or false otherwise
      *
      * @param string $server Hostname
-     * @param integer $port Hostname Port
-     * @param integer $slab Slab ID
+     * @param int    $port   Hostname Port
+     * @param int    $slab   Slab ID
      *
-     * @return array|boolean
-     * @throws Exception
+     * @return array|bool
+     *
+     * @throws \Exception
      */
     public function items($server, $port, $slab)
     {
-        throw new Exception('PECL Memcache does not support slabs items stats, use Server or Memcache instead');
+        throw new \Exception('PECL Memcache does not support slabs items stats, use Server or Memcache instead');
     }
 
     /**
@@ -125,20 +126,21 @@ class Memcached implements CommandInterface
      * Return the result
      *
      * @param string $server Hostname
-     * @param integer $port Hostname Port
-     * @param string $key Key to retrieve
+     * @param int    $port   Hostname Port
+     * @param string $key    Key to retrieve
      *
      * @return string
      */
     public function get($server, $port, $key)
     {
-        # Adding server
+        // Adding server
         self::$_memcache->addServer($server, $port);
 
-        # Executing command : get
+        // Executing command : get
         if ($item = self::$_memcache->get($key)) {
             return print_r($item, true);
         }
+
         return self::$_memcache->getResultMessage();
     }
 
@@ -146,26 +148,27 @@ class Memcached implements CommandInterface
      * Set an item
      * Return the result
      *
-     * @param string $server Hostname
-     * @param integer $port Hostname Port
-     * @param string $key Key to store
-     * @param mixed $data Data to store
-     * @param integer $duration Duration
+     * @param string $server   Hostname
+     * @param int    $port     Hostname Port
+     * @param string $key      Key to store
+     * @param mixed  $data     Data to store
+     * @param int    $duration Duration
      *
      * @return string
      */
-    function set($server, $port, $key, $data, $duration)
+    public function set($server, $port, $key, $data, $duration)
     {
-        # Adding server
+        // Adding server
         self::$_memcache->addServer($server, $port);
 
-        # Checking duration
+        // Checking duration
         if ($duration == '') {
             $duration = 0;
         }
 
-        # Executing command : set
+        // Executing command : set
         self::$_memcache->set($key, $data, $duration);
+
         return self::$_memcache->getResultMessage();
     }
 
@@ -174,18 +177,19 @@ class Memcached implements CommandInterface
      * Return the result
      *
      * @param string $server Hostname
-     * @param integer $port Hostname Port
-     * @param string $key Key to delete
+     * @param int    $port   Hostname Port
+     * @param string $key    Key to delete
      *
      * @return string
      */
     public function delete($server, $port, $key)
     {
-        # Adding server
+        // Adding server
         self::$_memcache->addServer($server, $port);
 
-        # Executing command : delete
+        // Executing command : delete
         self::$_memcache->delete($key);
+
         return self::$_memcache->getResultMessage();
     }
 
@@ -194,21 +198,22 @@ class Memcached implements CommandInterface
      * Return the result
      *
      * @param string $server Hostname
-     * @param integer $port Hostname Port
-     * @param string $key Key to increment
-     * @param integer $value Value to increment
+     * @param int    $port   Hostname Port
+     * @param string $key    Key to increment
+     * @param int    $value  Value to increment
      *
      * @return string
      */
-    function increment($server, $port, $key, $value)
+    public function increment($server, $port, $key, $value)
     {
-        # Adding server
+        // Adding server
         self::$_memcache->addServer($server, $port);
 
-        # Executing command : increment
+        // Executing command : increment
         if ($result = self::$_memcache->increment($key, $value)) {
             return $result;
         }
+
         return self::$_memcache->getResultMessage();
     }
 
@@ -217,21 +222,22 @@ class Memcached implements CommandInterface
      * Return the result
      *
      * @param string $server Hostname
-     * @param integer $port Hostname Port
-     * @param string $key Key to decrement
-     * @param integer $value Value to decrement
+     * @param int    $port   Hostname Port
+     * @param string $key    Key to decrement
+     * @param int    $value  Value to decrement
      *
      * @return string
      */
-    function decrement($server, $port, $key, $value)
+    public function decrement($server, $port, $key, $value)
     {
-        # Adding server
+        // Adding server
         self::$_memcache->addServer($server, $port);
 
-        # Executing command : decrement
+        // Executing command : decrement
         if ($result = self::$_memcache->decrement($key, $value)) {
             return $result;
         }
+
         return self::$_memcache->getResultMessage();
     }
 
@@ -240,18 +246,19 @@ class Memcached implements CommandInterface
      * Return the result
      *
      * @param string $server Hostname
-     * @param integer $port Hostname Port
-     * @param integer $delay Delay before flushing server
+     * @param int    $port   Hostname Port
+     * @param int    $delay  Delay before flushing server
      *
      * @return string
      */
     public function flush_all($server, $port, $delay)
     {
-        # Adding server
+        // Adding server
         self::$_memcache->addServer($server, $port);
 
-        # Executing command : delete
+        // Executing command : delete
         self::$_memcache->flush($delay);
+
         return self::$_memcache->getResultMessage();
     }
 
@@ -260,31 +267,34 @@ class Memcached implements CommandInterface
      * Return all the items matching parameters if successful, false otherwise
      *
      * @param string $server Hostname
-     * @param integer $port Hostname Port
-     * @param $search
-     * @param bool $level
-     * @param bool $more
+     * @param int    $port   Hostname Port
+     * @param mixed  $search
+     * @param bool   $level
+     * @param bool   $more
+     *
      * @return array
-     * @throws Exception
+     *
+     * @throws \Exception
      */
-    function search($server, $port, $search, $level = false, $more = false)
+    public function search($server, $port, $search, $level = false, $more = false)
     {
-        throw new Exception('PECL Memcached does not support search function, use Server instead');
+        throw new \Exception('PECL Memcached does not support search function, use Server instead');
     }
 
     /**
      * Execute a telnet command on a server
      * Return the result
      *
-     * @param string $server Hostname
-     * @param integer $port Hostname Port
+     * @param string $server  Hostname
+     * @param int    $port    Hostname Port
      * @param string $command Command to execute
      *
      * @return string
-     * @throws Exception
+     *
+     * @throws \Exception
      */
-    function telnet($server, $port, $command)
+    public function telnet($server, $port, $command)
     {
-        throw new Exception('PECL Memcached does not support telnet, use Server instead');
+        throw new \Exception('PECL Memcached does not support telnet, use Server instead');
     }
 }

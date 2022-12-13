@@ -1,19 +1,16 @@
 <?php
 use App\Library\Data\Errors;
 
-# Server seems down
-if((isset($stats)) && (($stats === false) || ($stats == array())))
-{ ?>
+// Server seems down
+if ((isset($stats)) && (($stats === false) || ($stats == []))) { ?>
     <div class="header corner full-size padding" style="margin-top:10px;text-align:center;">
         <?php
-        # Asking server of cluster stats
-        if(isset($_REQUEST['server']))
-        {
-            echo ($_ini->cluster($_REQUEST['server'])) ? 'All servers from Cluster ' . $_REQUEST['server'] : 'Server '  . $_REQUEST['server'], ' did not respond !';
+        // Asking server of cluster stats
+        if (isset($_REQUEST['server'])) {
+            echo ($_ini->cluster($_REQUEST['server'])) ? 'All servers from Cluster '.$_REQUEST['server'] : 'Server '.$_REQUEST['server'], ' did not respond !';
         }
-        # All servers stats
-        else
-        {
+        // All servers stats
+        else {
             echo 'Servers did not respond !';
         } ?>
     </div>
@@ -27,10 +24,9 @@ if((isset($stats)) && (($stats === false) || ($stats == array())))
     </div>
 <?php
 }
-# No slabs used
-elseif((isset($slabs)) && ($slabs === false))
-{
-?>
+// No slabs used
+elseif ((isset($slabs)) && ($slabs === false)) {
+    ?>
     <div class="header corner full-size padding" style="margin-top:10px;text-align:center;">
         No slabs used in this server !
     </div>
@@ -41,10 +37,9 @@ elseif((isset($slabs)) && ($slabs === false))
     </div>
 <?php
 }
-# No Items in slab
-elseif((isset($items)) && ($items === false))
-{
-?>
+// No Items in slab
+elseif ((isset($items)) && ($items === false)) {
+    ?>
     <div class="header corner full-size padding" style="margin-top:10px;text-align:center;">
         No item in this slab !
     </div>

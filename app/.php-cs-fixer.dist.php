@@ -23,8 +23,6 @@ return $config
         'lambda_not_used_import' => false,
         // List (`array` destructuring) assignment should be declared using the configured syntax. Requires PHP >= 7.1.
         'list_syntax' => true,
-        // Replaces `intval`, `floatval`, `doubleval`, `strval` and `boolval` function calls with according type casting operator.
-        'modernize_types_casting' => true,
         // DocBlocks must start with two asterisks, multiline comments must start with a single asterisk, after the opening slash. Both must end with a single asterisk before the closing slash.
         'multiline_comment_opening_closing' => false,
         // There should not be useless `else` cases.
@@ -74,6 +72,22 @@ return $config
         // A class that implements the __toString () method must explicitly implement the Stringable interface.
         PhpCsFixerCustomFixers\Fixer\StringableInterfaceFixer::name() => true,
 
+        // RISKY! Replaces `intval`, `floatval`, `doubleval`, `strval` and `boolval` function calls with according type casting operator.
+        'modernize_types_casting' => true,
+        // RISKY! Replace multiple nested calls of `dirname` by only one call with second `$level` parameter. Requires PHP >= 7.0.
+        'combine_nested_dirname' => true,
+        // RISKY! Replaces `dirname(__FILE__)` expression with equivalent `__DIR__` constant.
+        'dir_constant' => true,
+        // RISKY! Replace deprecated `ereg` regular expression functions with `preg`.
+        'ereg_to_preg' => true,
+        // RISKY! Order the flags in `fopen` calls, `b` and `t` must be last.
+        'fopen_flag_order' => true,
+        // RISKY! The flags in `fopen` calls must omit `t`, and `b` must be omitted or included consistently.
+        'fopen_flags' => true,
+        // RISKY! Master functions shall be used instead of aliases.
+        'no_alias_functions' => true,
+        // RISKY! There must be no `sprintf` calls with only the first argument.
+        'no_useless_sprintf' => true,
     ])
     ->setFinder(PhpCsFixer\Finder::create()
         ->in(__DIR__)

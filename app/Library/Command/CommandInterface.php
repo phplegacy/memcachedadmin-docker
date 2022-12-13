@@ -18,38 +18,38 @@
  * Interface of communication to MemCache Server
  *
  * @author elijaa@free.fr
+ *
  * @since 20/03/2010
  */
+
 namespace App\Library\Command;
 
 interface CommandInterface
 {
     /**
      * Constructor
-     *
-     * @return void
      */
-    function __construct();
+    public function __construct();
 
     /**
      * Send stats command to server
      * Return the result if successful or false otherwise
      *
      * @param string $server Hostname
-     * @param integer $port Hostname Port
+     * @param int    $port   Hostname Port
      *
-     * @return array|boolean
+     * @return array|bool
      */
-    function stats($server, $port);
+    public function stats($server, $port);
 
     /**
      * Send stats settings command to server
      * Return the result if successful or false otherwise
      *
      * @param string $server Hostname
-     * @param integer $port Hostname Port
+     * @param int    $port   Hostname Port
      *
-     * @return array|boolean
+     * @return array|bool
      */
     public function settings($server, $port);
 
@@ -58,123 +58,123 @@ interface CommandInterface
      * Return the result if successful or false otherwise
      *
      * @param string $server Hostname
-     * @param integer $port Hostname Port
+     * @param int    $port   Hostname Port
      *
-     * @return array|boolean
+     * @return array|bool
      */
-    function slabs($server, $port);
+    public function slabs($server, $port);
 
     /**
      * Retrieve items from a slabs
      * Return the result if successful or false otherwise
      *
      * @param string $server Hostname
-     * @param integer $port Hostname Port
-     * @param integer $slab Slab ID
+     * @param int    $port   Hostname Port
+     * @param int    $slab   Slab ID
      *
-     * @return array|boolean
+     * @return array|bool
      */
-    function items($server, $port, $slab);
+    public function items($server, $port, $slab);
 
     /**
      * Send get command to server to retrieve an item
      * Return the result
      *
      * @param string $server Hostname
-     * @param integer $port Hostname Port
-     * @param string $key Key to retrieve
+     * @param int    $port   Hostname Port
+     * @param string $key    Key to retrieve
      *
      * @return string
      */
-    function get($server, $port, $key);
+    public function get($server, $port, $key);
 
     /**
      * Set an item
      * Return the result
      *
-     * @param string $server Hostname
-     * @param integer $port Hostname Port
-     * @param string $key Key to store
-     * @param mixed $data Data to store
-     * @param integer $duration Duration
+     * @param string $server   Hostname
+     * @param int    $port     Hostname Port
+     * @param string $key      Key to store
+     * @param mixed  $data     Data to store
+     * @param int    $duration Duration
      *
      * @return string
      */
-    function set($server, $port, $key, $data, $duration);
+    public function set($server, $port, $key, $data, $duration);
 
     /**
      * Delete an item
      * Return the result
      *
      * @param string $server Hostname
-     * @param integer $port Hostname Port
-     * @param string $key Key to delete
+     * @param int    $port   Hostname Port
+     * @param string $key    Key to delete
      *
      * @return string
      */
-    function delete($server, $port, $key);
+    public function delete($server, $port, $key);
 
     /**
      * Increment the key by value
      * Return the result
      *
      * @param string $server Hostname
-     * @param integer $port Hostname Port
-     * @param string $key Key to increment
-     * @param integer $value Value to increment
+     * @param int    $port   Hostname Port
+     * @param string $key    Key to increment
+     * @param int    $value  Value to increment
      *
      * @return string
      */
-    function increment($server, $port, $key, $value);
+    public function increment($server, $port, $key, $value);
 
     /**
      * Decrement the key by value
      * Return the result
      *
      * @param string $server Hostname
-     * @param integer $port Hostname Port
-     * @param string $key Key to decrement
-     * @param integer $value Value to decrement
+     * @param int    $port   Hostname Port
+     * @param string $key    Key to decrement
+     * @param int    $value  Value to decrement
      *
      * @return string
      */
-    function decrement($server, $port, $key, $value);
+    public function decrement($server, $port, $key, $value);
 
     /**
      * Flush all items on a server after delay
      * Return the result
      *
      * @param string $server Hostname
-     * @param integer $port Hostname Port
-     * @param integer $delay Delay before flushing server
+     * @param int    $port   Hostname Port
+     * @param int    $delay  Delay before flushing server
      *
      * @return string
      */
-    function flush_all($server, $port, $delay);
+    public function flush_all($server, $port, $delay);
 
     /**
      * Search for item
      * Return all the items matching parameters if successful, false otherwise
      *
      * @param string $server Hostname
-     * @param integer $port Hostname Port
+     * @param int    $port   Hostname Port
      * @param string $search
-     * @param boolean $level Level of detail
-     * @param boolean $more More action
+     * @param bool   $level  Level of detail
+     * @param bool   $more   More action
      *
      * @return array
      */
-    function search($server, $port, $search, $level = false, $more = false);
+    public function search($server, $port, $search, $level = false, $more = false);
 
     /**
      * Execute a telnet command on a server
      * Return the result
      *
-     * @param string $server Hostname
-     * @param integer $port Hostname Port
+     * @param string $server  Hostname
+     * @param int    $port    Hostname Port
      * @param string $command Command to execute
      *
      * @return string
      */
-    function telnet($server, $port, $command);
+    public function telnet($server, $port, $command);
 }

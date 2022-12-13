@@ -18,22 +18,20 @@
  * Configuration class for editing, saving, ...
  *
  * @author elijaa@free.fr
+ *
  * @since 19/05/2010
  */
+
 namespace App\Library;
 
 class App
 {
     protected const DEFAULT_PORT = 11211;
 
-    /**
-     * @var null Singleton
-     */
-    protected static $_instance = null;
+    /** @var null Singleton */
+    protected static $_instance;
 
-    /**
-     * @var array Configuration needed keys and default values
-     */
+    /** @var array Configuration needed keys and default values */
     protected $defaultConfig = [
         'stats_api' => 'Server',
         'slabs_api' => 'Server',
@@ -52,26 +50,20 @@ class App
             'Default' => [
                 'memcached:11211' => [
                     'hostname' => 'memcached',
-                    'port' => 11211
-                ]
-            ]
-        ]
+                    'port' => 11211,
+                ],
+            ],
+        ],
     ];
 
-    /**
-     * @var array Storage
-     */
+    /** @var array Storage */
     protected $config;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $realTempDirPath;
 
     /**
      * Constructor, load configuration file and parse server list
-     *
-     * @return Void
      */
     protected function __construct()
     {
@@ -81,14 +73,13 @@ class App
 
     /**
      * Get App singleton
-     *
-     * @return App
      */
     public static function getInstance(): self
     {
-        if (! isset(self::$_instance)) {
+        if (!isset(self::$_instance)) {
             self::$_instance = new self();
         }
+
         return self::$_instance;
     }
 
@@ -110,9 +101,9 @@ class App
             'Default' => [
                 $hostname.':'.$port => [
                     'hostname' => $hostname,
-                    'port' => $port
-                ]
-            ]
+                    'port' => $port,
+                ],
+            ],
         ];
     }
 
@@ -129,12 +120,10 @@ class App
         if (isset($this->config[$key])) {
             return $this->config[$key];
         }
+
         return false;
     }
 
-    /**
-     * @return string
-     */
     public function tempDirPath(): string
     {
         if (!$this->realTempDirPath) {
@@ -144,21 +133,17 @@ class App
         return $this->realTempDirPath;
     }
 
-    /**
-     * @return bool
-     */
     public function isTempDirExists(): bool
     {
         $tempDirPath = $this->tempDirPath();
+
         return is_dir($tempDirPath);
     }
 
-    /**
-     * @return bool
-     */
     public function isTempDirWritable(): bool
     {
         $tempDirPath = $this->tempDirPath();
+
         return is_writable($tempDirPath);
     }
 
@@ -167,14 +152,13 @@ class App
      * Return the value, or false if does not exists
      *
      * @param string $cluster Cluster to retrieve
-     *
-     * @return array
      */
     public function cluster(string $cluster): array
     {
         if (isset($this->config['servers'][$cluster])) {
             return $this->config['servers'][$cluster];
         }
+
         return [];
     }
 
@@ -183,8 +167,6 @@ class App
      * Return the value, or false if does not exists
      *
      * @param string $server Server to retrieve
-     *
-     * @return array
      */
     public function server(string $server): array
     {
@@ -193,19 +175,18 @@ class App
                 return $this->config['servers'][$cluster][$server];
             }
         }
+
         return [];
     }
 
     /**
      * Config key to set
      *
-     * @param string $key Key to set
-     * @param mixed $value Value to set
+     * @param string $key   Key to set
+     * @param mixed  $value Value to set
      */
     public function set(string $key, $value)
     {
         $this->config[$key] = $value;
     }
-
-
 }

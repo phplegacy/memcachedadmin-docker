@@ -1,6 +1,5 @@
 <?php
 use App\Library\App;
-use App\Library\Html\Components;
 
 echo '<?xml version="1.0" encoding="UTF-8"?>'; ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -23,9 +22,9 @@ echo '<?xml version="1.0" encoding="UTF-8"?>'; ?>
     </div>
 
     <?php if (!App::getInstance()->isTempDirExists()) { ?>
-        <?php exit('<div class="header corner full-size padding" style="margin-top:10px;">Error: Temporary directory <em>"'. App::getInstance()->tempDirPath() .'"</em> does not exist.</div>'); ?>
+        <?php exit('<div class="header corner full-size padding" style="margin-top:10px;">Error: Temporary directory <em>"'.App::getInstance()->tempDirPath().'"</em> does not exist.</div>'); ?>
     <?php } elseif (!App::getInstance()->isTempDirWritable()) { ?>
-        <?php exit('<div class="header corner full-size padding" style="margin-top:10px;">Error: Temporary directory <em>"'. App::getInstance()->tempDirPath() .'"</em> is not writable.</div>'); ?>
+        <?php exit('<div class="header corner full-size padding" style="margin-top:10px;">Error: Temporary directory <em>"'.App::getInstance()->tempDirPath().'"</em> is not writable.</div>'); ?>
     <?php } ?>
 
 <!--[if IE]>

@@ -1,5 +1,6 @@
 <?php
 use App\Library\Data\Analysis;
+
 ?>
 <div class="sub-header corner full-size padding">Console</div>
         <div class="container corner full-size padding" id="console" style="visibility:visible;display:block;">
@@ -28,32 +29,31 @@ use App\Library\Data\Analysis;
 <?php
 $notFirst = false;
 
-# Items
-foreach($items as $key => $data)
-{
-    # Checking if first item
-    if($notFirst) { echo '<hr/>'; }
+// Items
+foreach ($items as $key => $data) {
+    // Checking if first item
+    if ($notFirst) {
+        echo '<hr/>';
+    }
     ?>
         <a class="green item" style=""
-        onclick="javascript:executeHideShow('console', 'hide', true);javascript:executeCommand('container', 'request_key=<?php echo urlencode($key); ?>&amp;request_api=<?php echo $_ini->get('get_api'); ?>&amp;request_command=get&amp;request_server=<?php echo $_REQUEST['server']; ?>');"><?php echo ((strlen($key) > 70) ? substr($key, 0, 70) . '[..]' : $key); ?></a>
+        onclick="javascript:executeHideShow('console', 'hide', true);javascript:executeCommand('container', 'request_key=<?php echo urlencode($key); ?>&amp;request_api=<?php echo $_ini->get('get_api'); ?>&amp;request_command=get&amp;request_server=<?php echo $_REQUEST['server']; ?>');"><?php echo (strlen($key) > 70) ? substr($key, 0, 70).'[..]' : $key; ?></a>
 
         <span class="right" style="clear:right;">
             <strong>Size</strong> : <?php echo Analysis::byteResize($data[0]); ?>Bytes,
             <strong>Expiration</strong> :
 <?php
-            # Infinite expiration
-            if($data[1] == $infinite)
-            {
+            // Infinite expiration
+            if ($data[1] == $infinite) {
                 echo '&#8734;';
             }
-            # Timestamp expiration
-            else
-            {
+            // Timestamp expiration
+            else {
                 echo Analysis::uptime($data[1] - time());
             } ?>
         </span>
 <?php
-    # First item done
+    // First item done
     $notFirst = true;
 } ?>
     </div>
