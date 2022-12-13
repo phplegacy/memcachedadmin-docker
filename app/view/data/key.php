@@ -1,17 +1,17 @@
 <div class="breadcrumbs">
-    <a href="/">Home</a> > <a href="/data/?server=<?= htmlspecialchars($requestServer, ENT_QUOTES) ?>">Data</a> > <?= htmlspecialchars($key) ?>
+    <a href="/">Home</a> > <a href="/data/?server=<?php echo htmlspecialchars($requestServer, ENT_QUOTES); ?>">Data</a> > <?php echo htmlspecialchars($key); ?>
 </div>
 
-<?php if (isset($data)) : ?>
+<?php if (isset($data)) { ?>
     <table border="1">
         <tr>
             <td>Key:</td>
-            <td><?= htmlspecialchars($key) ?></td>
+            <td><?php echo htmlspecialchars($key); ?></td>
         </tr>
         <tr>
             <td>Data:</td>
-            <td><?= htmlspecialchars($data) ?></td>
+            <td><?php echo htmlspecialchars($data); ?></td>
         </tr>
     </table>
 
-<?php endif ?>
+<?php } ?>

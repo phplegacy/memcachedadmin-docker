@@ -18,61 +18,57 @@
  * Version container
  *
  * @author cyrille.mahieux@free.fr
+ *
  * @since 24/08/2011
  */
+
 namespace App\Library\Data;
 
 use App\Library\App;
 
 class Version
 {
-    /**
-     * @var string Version file
-     */
+    /** @var string Version file */
     protected static $_file = 'latest';
 
-    /**
-     * @var string Google Code latest version data file
-     */
+    /** @var string Google Code latest version data file */
     protected static $_latest = 'https://blog.elijaa.org/public/latest';
 
-    /**
-     * @var int Time between HTTP check
-     */
-    protected static $_time = 1296000; # 15 days
-
+    /** @var int Time between HTTP check */
+    protected static $_time = 1296000; // 15 days
 
     /**
      * Check for the latest version, from local cache or via http
      * Return true if a newer version is available, false otherwise
      *
-     * @return boolean
+     * @return bool
      */
     public static function check()
     {
-        # Loading ini file
+        // Loading ini file
         $_ini = App::getInstance();
 
-        # Version definition file path
-        $path = rtrim($_ini->tempDirPath(), '/') . DIRECTORY_SEPARATOR . self::$_file;
+        // Version definition file path
+        $path = rtrim($_ini->tempDirPath(), '/').DIRECTORY_SEPARATOR.self::$_file;
 
-        # Checking if path is writable
+        // Checking if path is writable
         if (is_writable($_ini->tempDirPath())) {
-            # Checking if file was modified for less than 15 days ago
-            if ((is_array($stats = @stat($path))) && (isset($stats['mtime'])) && ($stats['mtime'] > (time() - self::$_time))) {
-                # Opening file and checking for latest version
-                return (version_compare(CURRENT_VERSION, file_get_contents($path)) == - 1);
+            // Checking if file was modified for less than 15 days ago
+            if (is_array($stats = @stat($path)) && (isset($stats['mtime'])) && ($stats['mtime'] > (time() - self::$_time))) {
+                // Opening file and checking for latest version
+                return version_compare(CURRENT_VERSION, file_get_contents($path)) == -1;
             } else {
-                # Getting last version from Google Code
+                // Getting last version from Google Code
                 if ($latest = @file_get_contents(self::$_latest)) {
-                    # Saving latest version in file
+                    // Saving latest version in file
                     file_put_contents($path, $latest);
 
-                    # Checking for latest version
-                    return (version_compare(CURRENT_VERSION, $latest) == - 1);
+                    // Checking for latest version
+                    return version_compare(CURRENT_VERSION, $latest) == -1;
                 } else {
-                    # To avoid error spam
+                    // To avoid error spam
                     file_put_contents($path, 'Net unreachable');
+
                     return true;
                 }
             }

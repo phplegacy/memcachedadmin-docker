@@ -18,23 +18,23 @@
  * Analysis of memcached command response
  *
  * @author elijaa@free.fr
+ *
  * @since 20/03/2010
  */
+
 namespace App\Library\Data;
 
 class Analysis
 {
-    /**
-     * @var string[]
-     */
-    private static $_non_additive = array(
+    /** @var array<string> */
+    private static $_non_additive = [
         'libevent',
         'pid',
         'pointer_size',
         'time',
         'uptime',
         'version',
-    );
+    ];
 
     /**
      * Merge two arrays of stats from Command_XX::stats()
@@ -46,21 +46,23 @@ class Analysis
      */
     public static function merge($array, $stats)
     {
-        # Checking input
-        if (! is_array($array)) {
+        // Checking input
+        if (!is_array($array)) {
             return $stats;
-        } elseif (! is_array($stats)) {
+        }
+        if (!is_array($stats)) {
             return $array;
         }
 
-        # Merging Stats
+        // Merging Stats
         foreach ($stats as $key => $value) {
-            if (! isset($array[$key]) || in_array($key, self::$_non_additive)) {
+            if (!isset($array[$key]) || in_array($key, self::$_non_additive)) {
                 $array[$key] = $value;
             } else {
                 $array[$key] += $value;
             }
         }
+
         return $array;
     }
 
@@ -74,16 +76,17 @@ class Analysis
      */
     public static function diff($array, $stats)
     {
-        # Checking input
-        if (! is_array($array)) {
+        // Checking input
+        if (!is_array($array)) {
             return $stats;
-        } elseif (! is_array($stats)) {
+        }
+        if (!is_array($stats)) {
             return $array;
         }
 
-        # Diff for each key
+        // Diff for each key
         foreach ($stats as $key => $value) {
-            if (isset($array[$key]) && ! in_array($key, self::$_non_additive)) {
+            if (isset($array[$key]) && !in_array($key, self::$_non_additive)) {
                 $stats[$key] = $value - $array[$key];
             }
         }
@@ -100,19 +103,19 @@ class Analysis
      */
     public static function stats($stats)
     {
-        if (! is_array($stats) || (count($stats) == 0)) {
+        if (!is_array($stats) || (count($stats) == 0)) {
             return false;
         }
 
-        # Command set()
+        // Command set()
         $stats['set_rate'] = ($stats['cmd_set'] == 0) ? '0.0' : sprintf('%.1f', $stats['cmd_set'] / $stats['uptime'], 1);
 
-        # Command get()
+        // Command get()
         $stats['get_hits_percent'] = ($stats['cmd_get'] == 0) ? ' - ' : sprintf('%.1f', $stats['get_hits'] / $stats['cmd_get'] * 100, 1);
         $stats['get_misses_percent'] = ($stats['cmd_get'] == 0) ? ' - ' : sprintf('%.1f', $stats['get_misses'] / $stats['cmd_get'] * 100, 1);
         $stats['get_rate'] = ($stats['cmd_get'] == 0) ? '0.0' : sprintf('%.1f', $stats['cmd_get'] / $stats['uptime'], 1);
 
-        # Command delete(), version > 1.2.X
+        // Command delete(), version > 1.2.X
         if (isset($stats['delete_hits'], $stats['delete_misses'])) {
             $stats['cmd_delete'] = $stats['delete_hits'] + $stats['delete_misses'];
             $stats['delete_hits_percent'] = ($stats['cmd_delete'] == 0) ? ' - ' : sprintf('%.1f', $stats['delete_hits'] / $stats['cmd_delete'] * 100, 1);
@@ -124,7 +127,7 @@ class Analysis
         }
         $stats['delete_rate'] = ($stats['cmd_delete'] == 0) ? '0.0' : sprintf('%.1f', $stats['cmd_delete'] / $stats['uptime'], 1);
 
-        # Command cas(), version > 1.2.X
+        // Command cas(), version > 1.2.X
         if (isset($stats['cas_hits'], $stats['cas_misses'], $stats['cas_badval'])) {
             $stats['cmd_cas'] = $stats['cas_hits'] + $stats['cas_misses'] + $stats['cas_badval'];
             $stats['cas_hits_percent'] = ($stats['cmd_cas'] == 0) ? ' - ' : sprintf('%.1f', $stats['cas_hits'] / $stats['cmd_cas'] * 100, 1);
@@ -138,7 +141,7 @@ class Analysis
         }
         $stats['cas_rate'] = ($stats['cmd_cas'] == 0) ? '0.0' : sprintf('%.1f', $stats['cmd_cas'] / $stats['uptime'], 1);
 
-        # Command increment(), version > 1.2.X
+        // Command increment(), version > 1.2.X
         if (isset($stats['incr_hits'], $stats['incr_misses'])) {
             $stats['cmd_incr'] = $stats['incr_hits'] + $stats['incr_misses'];
             $stats['incr_hits_percent'] = ($stats['cmd_incr'] == 0) ? ' - ' : sprintf('%.1f', $stats['incr_hits'] / $stats['cmd_incr'] * 100, 1);
@@ -150,7 +153,7 @@ class Analysis
         }
         $stats['incr_rate'] = ($stats['cmd_incr'] == 0) ? '0.0' : sprintf('%.1f', $stats['cmd_incr'] / $stats['uptime'], 1);
 
-        # Command decrement(), version > 1.2.X
+        // Command decrement(), version > 1.2.X
         if (isset($stats['decr_hits'], $stats['decr_misses'])) {
             $stats['cmd_decr'] = $stats['decr_hits'] + $stats['decr_misses'];
             $stats['decr_hits_percent'] = ($stats['cmd_decr'] == 0) ? ' - ' : sprintf('%.1f', $stats['decr_hits'] / $stats['cmd_decr'] * 100, 1);
@@ -162,7 +165,7 @@ class Analysis
         }
         $stats['decr_rate'] = ($stats['cmd_decr'] == 0) ? '0.0' : sprintf('%.1f', $stats['cmd_decr'] / $stats['uptime'], 1);
 
-        # Command decrement(), version > 1.4.7
+        // Command decrement(), version > 1.4.7
         if (isset($stats['touch_hits'], $stats['touch_misses'])) {
             $stats['cmd_touch'] = $stats['touch_hits'] + $stats['touch_misses'];
             $stats['touch_hits_percent'] = ($stats['cmd_touch'] == 0) ? ' - ' : sprintf('%.1f', $stats['touch_hits'] / $stats['cmd_touch'] * 100, 1);
@@ -174,30 +177,29 @@ class Analysis
         }
         $stats['touch_rate'] = ($stats['cmd_touch'] == 0) ? '0.0' : sprintf('%.1f', $stats['cmd_touch'] / $stats['uptime'], 1);
 
-        # Total hit & miss
-        #$stats['cmd_total'] = $stats['cmd_get'] + $stats['cmd_set'] + $stats['cmd_delete'] + $stats['cmd_cas'] + $stats['cmd_incr'] + $stats['cmd_decr'];
-        #$stats['hit_percent'] = ($stats['cmd_get'] == 0) ? '0.0' : sprintf('%.1f', ($stats['get_hits']) / ($stats['get_hits'] + $stats['get_misses']) * 100, 1);
-        #$stats['miss_percent'] = ($stats['cmd_get'] == 0) ? '0.0' : sprintf('%.1f', ($stats['get_misses']) / ($stats['get_hits'] + $stats['get_misses']) * 100, 1);
+        // Total hit & miss
+        // $stats['cmd_total'] = $stats['cmd_get'] + $stats['cmd_set'] + $stats['cmd_delete'] + $stats['cmd_cas'] + $stats['cmd_incr'] + $stats['cmd_decr'];
+        // $stats['hit_percent'] = ($stats['cmd_get'] == 0) ? '0.0' : sprintf('%.1f', ($stats['get_hits']) / ($stats['get_hits'] + $stats['get_misses']) * 100, 1);
+        // $stats['miss_percent'] = ($stats['cmd_get'] == 0) ? '0.0' : sprintf('%.1f', ($stats['get_misses']) / ($stats['get_hits'] + $stats['get_misses']) * 100, 1);
 
-
-        # Command flush_all
+        // Command flush_all
         if (isset($stats['cmd_flush'])) {
             $stats['flush_rate'] = ($stats['cmd_flush'] == 0) ? '0.0' : sprintf('%.1f', $stats['cmd_flush'] / $stats['uptime'], 1);
         } else {
             $stats['flush_rate'] = '0.0';
         }
 
-        # Cache size
+        // Cache size
         $stats['bytes_percent'] = ($stats['limit_maxbytes'] == 0) ? '0.0' : sprintf('%.1f', $stats['bytes'] / $stats['limit_maxbytes'] * 100, 1);
 
-        # Request rate
+        // Request rate
         $stats['request_rate'] = sprintf('%.1f', ($stats['cmd_get'] + $stats['cmd_set'] + $stats['cmd_delete'] + $stats['cmd_cas'] + $stats['cmd_incr'] + $stats['cmd_decr']) / $stats['uptime'], 1);
-        $stats['hit_rate'] = sprintf('%.1f', ($stats['get_hits']) / $stats['uptime'], 1);
-        $stats['miss_rate'] = sprintf('%.1f', ($stats['get_misses']) / $stats['uptime'], 1);
+        $stats['hit_rate'] = sprintf('%.1f', $stats['get_hits'] / $stats['uptime'], 1);
+        $stats['miss_rate'] = sprintf('%.1f', $stats['get_misses'] / $stats['uptime'], 1);
 
-        # Eviction & reclaimed rate
+        // Eviction & reclaimed rate
         $stats['eviction_rate'] = ($stats['evictions'] == 0) ? '0.0' : sprintf('%.1f', $stats['evictions'] / $stats['uptime'], 1);
-        $stats['reclaimed_rate'] = (! isset($stats['reclaimed']) || ($stats['reclaimed'] == 0)) ? '0.0' : sprintf('%.1f', $stats['reclaimed'] / $stats['uptime'], 1);
+        $stats['reclaimed_rate'] = (!isset($stats['reclaimed']) || ($stats['reclaimed'] == 0)) ? '0.0' : sprintf('%.1f', $stats['reclaimed'] / $stats['uptime'], 1);
 
         return $stats;
     }
@@ -211,22 +213,22 @@ class Analysis
      */
     public static function slabs($slabs)
     {
-        # Initializing Used Slabs
+        // Initializing Used Slabs
         $slabs['used_slabs'] = 0;
         $slabs['total_wasted'] = 0;
 
-        # Request Rate par Slabs
+        // Request Rate par Slabs
         foreach ($slabs as $id => $slab) {
-            # Check if it's a Slab
+            // Check if it's a Slab
             if (is_numeric($id)) {
-                # Check if Slab is used
+                // Check if Slab is used
                 if ($slab['used_chunks'] > 0) {
-                    $slabs['used_slabs'] ++;
+                    ++$slabs['used_slabs'];
                 }
                 $slabs[$id]['request_rate'] = sprintf('%.1f', ($slab['get_hits'] + $slab['cmd_set'] + $slab['delete_hits'] + $slab['cas_hits'] + $slab['cas_badval'] + $slab['incr_hits'] + $slab['decr_hits']) / $slabs['uptime'], 1);
-                $requested = isset($slab['items:mem_requested']) // Post Memcached 1.5.17
-                    ? $slab['items:mem_requested']
-                    : (isset($slab['mem_requested']) ? $slab['mem_requested'] : 0);
+                $requested = // Post Memcached 1.5.17
+                    $slab['items:mem_requested']
+                    ?? ($slab['mem_requested'] ?? 0);
                 $slabs[$id]['mem_wasted'] = (($slab['total_chunks'] * $slab['chunk_size']) < $requested)
                     ? (($slab['total_chunks'] - $slab['used_chunks']) * $slab['chunk_size'])
                     : (($slab['total_chunks'] * $slab['chunk_size']) - $requested);
@@ -234,8 +236,8 @@ class Analysis
             }
         }
 
-        # Cheking server total malloced > 0
-        if (! isset($slabs['total_malloced'])) {
+        // Cheking server total malloced > 0
+        if (!isset($slabs['total_malloced'])) {
             $slabs['total_malloced'] = 0;
         }
 
@@ -245,8 +247,8 @@ class Analysis
     /**
      * Calculate Uptime
      *
-     * @param integer $uptime Uptime timestamp
-     * @param boolean $compact Compact Mode
+     * @param int  $uptime  Uptime timestamp
+     * @param bool $compact Compact Mode
      *
      * @return string
      */
@@ -260,77 +262,81 @@ class Analysis
                 return ' less than 1 min';
             }
             if ($compact == false) {
-                return $days . ' day' . (($days > 1) ? 's' : '') . ' ' . $hours . ' hr' . (($hours > 1) ? 's' : '') . ' ' . $mins . ' min' . (($mins > 1) ? 's' : '');
+                return $days.' day'.(($days > 1) ? 's' : '').' '.$hours.' hr'.(($hours > 1) ? 's' : '').' '.$mins.' min'.(($mins > 1) ? 's' : '');
             } else {
-                return $days . 'd ' . $hours . 'h ' . $mins . 'm';
+                return $days.'d '.$hours.'h '.$mins.'m';
             }
         }
+
         return ' - ';
     }
 
     /**
      * Resize a byte value
      *
-     * @param integer $value Value to resize
+     * @param int $value Value to resize
      *
      * @return string
      */
     public static function byteResize($value)
     {
-        # Unit list
-        $units = array('', 'K', 'M', 'G', 'T');
+        // Unit list
+        $units = ['', 'K', 'M', 'G', 'T'];
 
-        # Resizing
+        // Resizing
         foreach ($units as $unit) {
             if ($value < 1024) {
                 break;
             }
             $value /= 1024;
         }
+
         return sprintf('%.1f %s', $value, $unit);
     }
 
     /**
      * Resize a value
      *
-     * @param integer $value Value to resize
+     * @param int $value Value to resize
      *
      * @return string
      */
     public static function valueResize($value)
     {
-        # Unit list
-        $units = array('', 'K', 'M', 'G', 'T');
+        // Unit list
+        $units = ['', 'K', 'M', 'G', 'T'];
 
-        # Resizing
+        // Resizing
         foreach ($units as $unit) {
             if ($value < 1000) {
                 break;
             }
             $value /= 1000;
         }
+
         return sprintf('%.1f%s', $value, $unit);
     }
 
     /**
      * Resize a hit value
      *
-     * @param integer $value Hit value to resize
+     * @param int $value Hit value to resize
      *
      * @return string
      */
     public static function hitResize($value)
     {
-        # Unit list
-        $units = array('', 'K', 'M', 'G', 'T');
+        // Unit list
+        $units = ['', 'K', 'M', 'G', 'T'];
 
-        # Resizing
+        // Resizing
         foreach ($units as $unit) {
             if ($value < 10000000) {
                 break;
             }
             $value /= 1000;
         }
+
         return sprintf('%.0f%s', $value, $unit);
     }
 }

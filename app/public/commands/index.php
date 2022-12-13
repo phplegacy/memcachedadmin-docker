@@ -18,240 +18,241 @@
  * Executing commands
  *
  * @author elijaa@free.fr
+ *
  * @since 06/04/2010
  */
-# Require
+// Require
 use App\Library\Command\Factory;
 use App\Library\Html\Components;
 
-require_once __DIR__ .'/../../bootstrap.php';
+require_once __DIR__.'/../../bootstrap.php';
 
-# Initializing requests & response
+// Initializing requests & response
 $request = (isset($_REQUEST['request_command'])) ? $_REQUEST['request_command'] : null;
 
-# Starting
+// Starting
 ob_start();
 
-# Display by request rype
+// Display by request rype
 switch ($request) {
-    # Memcache::get command
-    case 'get' :
-        # Ask for get on a cluster
+    // Memcache::get command
+    case 'get':
+        // Ask for get on a cluster
         if (isset($_REQUEST['request_server']) && ($cluster = $_ini->cluster($_REQUEST['request_server']))) {
             foreach ($cluster as $server) {
-                # Dumping server get command response
+                // Dumping server get command response
                 echo Components::serverResponse($server['hostname'], $server['port'], Factory::api($_REQUEST['request_api'])->get($server['hostname'], $server['port'], $_REQUEST['request_key']));
             }
-        }        # Ask for get on one server
+        }        // Ask for get on one server
         elseif (isset($_REQUEST['request_server']) && ($server = $_ini->server($_REQUEST['request_server']))) {
-            # Dumping server get command response
+            // Dumping server get command response
             echo Components::serverResponse($server['hostname'], $server['port'], Factory::api($_REQUEST['request_api'])->get($server['hostname'], $server['port'], $_REQUEST['request_key']));
-        }         # Ask for get on all servers
+        }         // Ask for get on all servers
         else {
             foreach ($_ini->get('servers') as $cluster => $servers) {
-                # Asking for each server stats
+                // Asking for each server stats
                 foreach ($servers as $server) {
-                    # Dumping server get command response
+                    // Dumping server get command response
                     echo Components::serverResponse($server['hostname'], $server['port'], Factory::api($_REQUEST['request_api'])->get($server['hostname'], $server['port'], $_REQUEST['request_key']));
                 }
             }
         }
         break;
 
-    # Memcache::set command
-    case 'set' :
-        # Ask for set on a cluster
+        // Memcache::set command
+    case 'set':
+        // Ask for set on a cluster
         if (isset($_REQUEST['request_server']) && ($cluster = $_ini->cluster($_REQUEST['request_server']))) {
             foreach ($cluster as $server) {
-                # Dumping server get command response
+                // Dumping server get command response
                 echo Components::serverResponse($server['hostname'], $server['port'], Factory::api($_REQUEST['request_api'])->set($server['hostname'], $server['port'], $_REQUEST['request_key'], $_REQUEST['request_data'], $_REQUEST['request_duration']));
             }
-        }        # Ask for set on one server
+        }        // Ask for set on one server
         elseif (isset($_REQUEST['request_server']) && ($server = $_ini->server($_REQUEST['request_server']))) {
-            # Dumping server set command response
+            // Dumping server set command response
             echo Components::serverResponse($server['hostname'], $server['port'], Factory::api($_REQUEST['request_api'])->set($server['hostname'], $server['port'], $_REQUEST['request_key'], $_REQUEST['request_data'], $_REQUEST['request_duration']));
-        }         # Ask for set on all servers
+        }         // Ask for set on all servers
         else {
             foreach ($_ini->get('servers') as $cluster => $servers) {
-                # Asking for each server stats
+                // Asking for each server stats
                 foreach ($servers as $server) {
-                    # Dumping server set command response
+                    // Dumping server set command response
                     echo Components::serverResponse($server['hostname'], $server['port'], Factory::api($_REQUEST['request_api'])->set($server['hostname'], $server['port'], $_REQUEST['request_key'], $_REQUEST['request_data'], $_REQUEST['request_duration']));
                 }
             }
         }
         break;
 
-    # Memcache::delete command
-    case 'delete' :
-        # Ask for delete on a cluster
+        // Memcache::delete command
+    case 'delete':
+        // Ask for delete on a cluster
         if (isset($_REQUEST['request_server']) && ($cluster = $_ini->cluster($_REQUEST['request_server']))) {
             foreach ($cluster as $server) {
-                # Dumping server get command response
+                // Dumping server get command response
                 echo Components::serverResponse($server['hostname'], $server['port'], Factory::api($_REQUEST['request_api'])->delete($server['hostname'], $server['port'], $_REQUEST['request_key']));
             }
-        }        # Ask for delete on one server
+        }        // Ask for delete on one server
         elseif (isset($_REQUEST['request_server']) && ($server = $_ini->server($_REQUEST['request_server']))) {
-            # Dumping server delete command response
+            // Dumping server delete command response
             echo Components::serverResponse($server['hostname'], $server['port'], Factory::api($_REQUEST['request_api'])->delete($server['hostname'], $server['port'], $_REQUEST['request_key']));
-        }         # Ask for delete on all servers
+        }         // Ask for delete on all servers
         else {
             foreach ($_ini->get('servers') as $cluster => $servers) {
-                # Asking for each server stats
+                // Asking for each server stats
                 foreach ($servers as $server) {
-                    # Dumping server delete command response
+                    // Dumping server delete command response
                     echo Components::serverResponse($server['hostname'], $server['port'], Factory::api($_REQUEST['request_api'])->delete($server['hostname'], $server['port'], $_REQUEST['request_key']));
                 }
             }
         }
         break;
 
-    # Memcache::increment command
-    case 'increment' :
-        # Checking value
-        if (! isset($_REQUEST['request_value']) || ! is_numeric($_REQUEST['request_value'])) {
+        // Memcache::increment command
+    case 'increment':
+        // Checking value
+        if (!isset($_REQUEST['request_value']) || !is_numeric($_REQUEST['request_value'])) {
             $_REQUEST['request_value'] = 1;
         }
 
-        # Ask for increment on a cluster
+        // Ask for increment on a cluster
         if (isset($_REQUEST['request_server']) && ($cluster = $_ini->cluster($_REQUEST['request_server']))) {
             foreach ($cluster as $server) {
-                # Dumping server increment command response
+                // Dumping server increment command response
                 echo Components::serverResponse($server['hostname'], $server['port'], Factory::api($_REQUEST['request_api'])->increment($server['hostname'], $server['port'], $_REQUEST['request_key'], $_REQUEST['request_value']));
             }
-        }        # Ask for increment on one server
+        }        // Ask for increment on one server
         elseif (isset($_REQUEST['request_server']) && ($server = $_ini->server($_REQUEST['request_server']))) {
-            # Dumping server increment command response
+            // Dumping server increment command response
             echo Components::serverResponse($server['hostname'], $server['port'], Factory::api($_REQUEST['request_api'])->increment($server['hostname'], $server['port'], $_REQUEST['request_key'], $_REQUEST['request_value']));
-        }         # Ask for increment on all servers
+        }         // Ask for increment on all servers
         else {
             foreach ($_ini->get('servers') as $cluster => $servers) {
-                # Asking for each server stats
+                // Asking for each server stats
                 foreach ($servers as $server) {
-                    # Dumping server increment command response
+                    // Dumping server increment command response
                     echo Components::serverResponse($server['hostname'], $server['port'], Factory::api($_REQUEST['request_api'])->increment($server['hostname'], $server['port'], $_REQUEST['request_key'], $_REQUEST['request_value']));
                 }
             }
         }
         break;
 
-    # Memcache::decrement command
-    case 'decrement' :
-        # Checking value
-        if (! isset($_REQUEST['request_value']) || ! is_numeric($_REQUEST['request_value'])) {
+        // Memcache::decrement command
+    case 'decrement':
+        // Checking value
+        if (!isset($_REQUEST['request_value']) || !is_numeric($_REQUEST['request_value'])) {
             $_REQUEST['request_value'] = 1;
         }
 
-        # Ask for decrement on a cluster
+        // Ask for decrement on a cluster
         if (isset($_REQUEST['request_server']) && ($cluster = $_ini->cluster($_REQUEST['request_server']))) {
             foreach ($cluster as $server) {
-                # Dumping server decrement command response
+                // Dumping server decrement command response
                 echo Components::serverResponse($server['hostname'], $server['port'], Factory::api($_REQUEST['request_api'])->decrement($server['hostname'], $server['port'], $_REQUEST['request_key'], $_REQUEST['request_value']));
             }
-        }        # Ask for decrement on one server
+        }        // Ask for decrement on one server
         elseif (isset($_REQUEST['request_server']) && ($server = $_ini->server($_REQUEST['request_server']))) {
-            # Dumping server decrement command response
+            // Dumping server decrement command response
             echo Components::serverResponse($server['hostname'], $server['port'], Factory::api($_REQUEST['request_api'])->decrement($server['hostname'], $server['port'], $_REQUEST['request_key'], $_REQUEST['request_value']));
-        }         # Ask for decrement on all servers
+        }         // Ask for decrement on all servers
         else {
             foreach ($_ini->get('servers') as $cluster => $servers) {
-                # Asking for each server stats
+                // Asking for each server stats
                 foreach ($servers as $server) {
-                    # Dumping server decrement command response
+                    // Dumping server decrement command response
                     echo Components::serverResponse($server['hostname'], $server['port'], Factory::api($_REQUEST['request_api'])->decrement($server['hostname'], $server['port'], $_REQUEST['request_key'], $_REQUEST['request_value']));
                 }
             }
         }
         break;
 
-    # Memcache::flush_all command
-    case 'flush_all' :
-        # Checking delay
-        if (! isset($_REQUEST['request_delay']) || ! is_numeric($_REQUEST['request_delay'])) {
+        // Memcache::flush_all command
+    case 'flush_all':
+        // Checking delay
+        if (!isset($_REQUEST['request_delay']) || !is_numeric($_REQUEST['request_delay'])) {
             $_REQUEST['request_delay'] = 0;
         }
 
-        # Ask for flush_all on a cluster
+        // Ask for flush_all on a cluster
         if (isset($_REQUEST['request_server']) && ($cluster = $_ini->cluster($_REQUEST['request_server']))) {
             foreach ($cluster as $server) {
-                # Dumping server get command response
+                // Dumping server get command response
                 echo Components::serverResponse($server['hostname'], $server['port'], Factory::api($_REQUEST['request_api'])->flush_all($server['hostname'], $server['port'], $_REQUEST['request_delay']));
             }
-        }        # Ask for flush_all on one server
+        }        // Ask for flush_all on one server
         elseif (isset($_REQUEST['request_server']) && ($server = $_ini->server($_REQUEST['request_server']))) {
-            # Dumping server flush_all command response
+            // Dumping server flush_all command response
             echo Components::serverResponse($server['hostname'], $server['port'], Factory::api($_REQUEST['request_api'])->flush_all($server['hostname'], $server['port'], $_REQUEST['request_delay']));
-        }         # Ask for flush_all on all servers
+        }         // Ask for flush_all on all servers
         else {
             foreach ($_ini->get('servers') as $cluster => $servers) {
-                # Asking for each server stats
+                // Asking for each server stats
                 foreach ($servers as $server) {
-                    # Dumping server flush_all command response
+                    // Dumping server flush_all command response
                     echo Components::serverResponse($server['hostname'], $server['port'], Factory::api($_REQUEST['request_api'])->flush_all($server['hostname'], $server['port'], $_REQUEST['request_delay']));
                 }
             }
         }
         break;
 
-    # Memcache::search command
-    case 'search' :
-        # Ask for search on a cluster
+        // Memcache::search command
+    case 'search':
+        // Ask for search on a cluster
         if (isset($_REQUEST['request_server']) && ($cluster = $_ini->cluster($_REQUEST['request_server']))) {
             foreach ($cluster as $server) {
-                # Dumping server get command response
+                // Dumping server get command response
                 echo Components::serverResponse($server['hostname'], $server['port'], Factory::api('Server')->search($server['hostname'], $server['port'], $_REQUEST['request_key'], $_REQUEST['request_level'], $_REQUEST['request_more']));
             }
-        }        # Ask for search on one server
+        }        // Ask for search on one server
         elseif (isset($_REQUEST['request_server']) && ($server = $_ini->server($_REQUEST['request_server']))) {
-            # Dumping server search command response
+            // Dumping server search command response
             echo Components::serverResponse($server['hostname'], $server['port'], Factory::api('Server')->search($server['hostname'], $server['port'], $_REQUEST['request_key'], $_REQUEST['request_level'], $_REQUEST['request_more']));
-        }         # Ask for search on all servers
+        }         // Ask for search on all servers
         else {
-            # Looking into each cluster
+            // Looking into each cluster
             foreach ($_ini->get('servers') as $cluster => $servers) {
-                # Asking for each server stats
+                // Asking for each server stats
                 foreach ($servers as $server) {
-                    # Dumping server search command response
+                    // Dumping server search command response
                     echo Components::serverResponse($server['hostname'], $server['port'], Factory::api('Server')->search($server['hostname'], $server['port'], $_REQUEST['request_key'], $_REQUEST['request_level'], $_REQUEST['request_more']));
                 }
             }
         }
         break;
 
-    # Memcache::telnet command
-    case 'telnet' :
-        # Ask for a telnet command on a cluster
+        // Memcache::telnet command
+    case 'telnet':
+        // Ask for a telnet command on a cluster
         if (isset($_REQUEST['request_server']) && ($cluster = $_ini->cluster($_REQUEST['request_server']))) {
             foreach ($cluster as $server) {
-                # Dumping server telnet command response
+                // Dumping server telnet command response
                 echo Components::serverResponse($server['hostname'], $server['port'], Factory::api('Server')->telnet($server['hostname'], $server['port'], $_REQUEST['request_telnet']));
             }
-        }        # Ask for a telnet command on one server
+        }        // Ask for a telnet command on one server
         elseif (isset($_REQUEST['request_server']) && ($server = $_ini->server($_REQUEST['request_server']))) {
-            # Dumping server telnet command response
+            // Dumping server telnet command response
             echo Components::serverResponse($server['hostname'], $server['port'], Factory::api('Server')->telnet($server['hostname'], $server['port'], $_REQUEST['request_telnet']));
-        }         # Ask for a telnet command on all servers
+        }         // Ask for a telnet command on all servers
         else {
-            # Looking into each cluster
+            // Looking into each cluster
             foreach ($_ini->get('servers') as $cluster => $servers) {
-                # Asking for each server stats
+                // Asking for each server stats
                 foreach ($servers as $server) {
-                    # Dumping server telnet command response
+                    // Dumping server telnet command response
                     echo Components::serverResponse($server['hostname'], $server['port'], Factory::api('Server')->telnet($server['hostname'], $server['port'], $_REQUEST['request_telnet']));
                 }
             }
         }
         break;
-    # Default : No command
-    default :
-        # Showing header
-        require __DIR__ .'/../../view/header.php';
+        // Default : No command
+    default:
+        // Showing header
+        require __DIR__.'/../../view/header.php';
 
-        # Showing formulary
-        require __DIR__ .'/../../view/commands/commands.php';
+        // Showing formulary
+        require __DIR__.'/../../view/commands/commands.php';
 
-        # Showing footer
-        require __DIR__ .'/../../view/footer.php';
+        // Showing footer
+        require __DIR__.'/../../view/footer.php';
         break;
 }
 

@@ -1,5 +1,6 @@
 <?php
 use App\Library\Html\Components;
+
 ?>
     <div style="float:left;">
         <div class="sub-header corner full-size padding">Console</div>

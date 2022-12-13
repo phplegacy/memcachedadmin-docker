@@ -18,15 +18,16 @@
  * Live Stats top style
  *
  * @author Cyrille Mahieux : elijaa(at)free.fr
+ *
  * @since 12/04/2010
  */
 
-# Require
+// Require
 use App\Library\App;
 use App\Library\Command\Factory;
 use App\Library\Command\Server;
 
-require_once __DIR__ .'/../../bootstrap.php';
+require_once __DIR__.'/../../bootstrap.php';
 
 $requestServer = isset($_GET['server']) ? trim($_GET['server']) : null;
 if ($requestServer) {
@@ -40,9 +41,9 @@ if ($requestServer) {
     }
 }
 
-require __DIR__ .'/../../view/header.php';
-require __DIR__ .'/../../view/server_select.php';
+require __DIR__.'/../../view/header.php';
+require __DIR__.'/../../view/server_select.php';
 if (isset($keys)) {
-    require __DIR__ . '/../../view/data/list.php';
+    require __DIR__.'/../../view/data/list.php';
 }
-require __DIR__ .'/../../view/footer.php';
+require __DIR__.'/../../view/footer.php';

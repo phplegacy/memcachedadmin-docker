@@ -1,5 +1,6 @@
 <?php
 use App\Library\Data\Analysis;
+
 ?>
 <div class="size-4" style="float:left;">
         <div class="sub-header corner padding">Slabs <span class="green">Stats</span></div>
@@ -38,23 +39,22 @@ use App\Library\Data\Analysis;
 <?php
 $actualSlab = 0;
 
-# Slabs parsing
-foreach($slabs as $id => $slab)
-{
-    # If Slab is Used
-    if(is_numeric($id))
-    {
-        # Making a new line
-        if($actualSlab >= 4)
-        {
-?>
+// Slabs parsing
+foreach ($slabs as $id => $slab) {
+    // If Slab is Used
+    if (is_numeric($id)) {
+        // Making a new line
+        if ($actualSlab >= 4) {
+            ?>
         </tr>
         <tr>
 <?php
-            $actualSlab = 0;
+                        $actualSlab = 0;
         }
-?>
-        <td <?php if($actualSlab > 0) { echo 'style="padding-left:9px;"'; } ?> valign="top">
+        ?>
+        <td <?php if ($actualSlab > 0) {
+            echo 'style="padding-left:9px;"';
+        } ?> valign="top">
             <div class="sub-header corner padding size-5">Slab <?php echo $id; ?> <span class="green">Stats</span>
                 <span style="float:right;"><a href="?server=<?php echo $_REQUEST['server']; ?>&amp;show=items&amp;slab=<?php echo $id; ?>">See Slab Items</a></span>
             </div>
@@ -85,8 +85,7 @@ foreach($slabs as $id => $slab)
                     <?php echo ($slab['request_rate'] > 999) ? Analysis::hitResize($slab['request_rate']) : $slab['request_rate']; ?> Request/sec
                 </div>
 <?php
-if($slab['used_chunks'] > 0)
-{ ?>
+if ($slab['used_chunks'] > 0) { ?>
                 <div class="line">
                     <span class="left slabs">Evicted</span>
                     <?php echo (isset($slab['items:evicted'])) ? $slab['items:evicted'] : 'N/A'; ?>
@@ -105,9 +104,7 @@ if($slab['used_chunks'] > 0)
                     <?php echo $slab['items:tailrepairs']; ?>
                 </div>
                 -->
-<?php }
-else
-{?>
+<?php } else {?>
                 <div class="line">
                     <span class="left slabs">Slab is allocated but empty</span>
                 </div>
@@ -115,13 +112,12 @@ else
             </div>
             </td>
 <?php
-            $actualSlab++;
+            ++$actualSlab;
     }
-?>
+    ?>
 <?php
 }
-for(true; $actualSlab < 4 ; $actualSlab++)
-{
+for (true; $actualSlab < 4; ++$actualSlab) {
     echo '<td style="width:100%;"></td>';
 }
 ?>

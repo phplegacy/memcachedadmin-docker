@@ -18,16 +18,16 @@
  * Error container
  *
  * @author elijaa@free.fr
+ *
  * @since 11/10/2010
  */
+
 namespace App\Library\Data;
 
 class Errors
 {
-    /**
-     * @var array
-     */
-    private static $_errors = array();
+    /** @var array */
+    private static $_errors = [];
 
     /**
      * Add an error to the container
@@ -55,7 +55,7 @@ class Errors
     /**
      * Return errors count
      *
-     * @return integer
+     * @return int
      */
     public static function count()
     {

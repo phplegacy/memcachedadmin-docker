@@ -1,5 +1,6 @@
 <?php
 use App\Library\Html\Components;
+
 ?>
 <script type="text/javascript">
     var timeout = <?php echo $refresh_rate * 1000; ?>;
@@ -10,9 +11,8 @@ use App\Library\Html\Components;
 <div style="float:left;">
     <div class="sub-header corner full-size padding">Live <span class="green">Stats</span></div>
     <?php
-    # Refresh rate increased
-    if($refresh_rate > $_ini->get('refresh_rate'))
-    { ?>
+    // Refresh rate increased
+    if ($refresh_rate > $_ini->get('refresh_rate')) { ?>
         <div class="container corner" style="padding:9px;">
             Connections errors were discovered, to prevent any problem, refresh rate was increased by
             <?php echo sprintf('%.1f', $refresh_rate - $_ini->get('refresh_rate')); ?> seconds.
@@ -22,7 +22,7 @@ use App\Library\Html\Components;
     <div class="full-size padding">
         <br/>
         <div style="margin: 10px 0;">
-            Select cluster: <?= Components::serverSelect(
+            Select cluster: <?php echo Components::serverSelect(
                 'server_select',
                 $_REQUEST['server'] ?? null,
                 'list',

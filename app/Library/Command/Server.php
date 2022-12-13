@@ -18,8 +18,10 @@
  * Sending command to memcache server
  *
  * @author elijaa@free.fr
+ *
  * @since 20/03/2010
  */
+
 namespace App\Library\Command;
 
 use App\Library\App;
@@ -28,14 +30,10 @@ use App\Library\Data\Errors;
 
 class Server implements CommandInterface
 {
-    /**
-     * @var App|null
-     */
+    /** @var App|null */
     private static $_ini;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private static $_log;
 
     /**
@@ -60,50 +58,51 @@ class Server implements CommandInterface
      * Return the response, or false otherwise
      *
      * @param string $command Command
-     * @param string $server Server Hostname
-     * @param integer $port Server Port
+     * @param string $server  Server Hostname
+     * @param int    $port    Server Port
      *
-     * @return string|boolean
+     * @return string|bool
      */
     public function exec(string $command, string $server, int $port)
     {
-        # Socket Opening
-        if (! ($handle = @fsockopen($server, $port, $errno, $errstr, self::$_ini->get('connection_timeout')))) {
-            # Adding error to log
+        // Socket Opening
+        if (!($handle = @fsockopen($server, $port, $errno, $errstr, self::$_ini->get('connection_timeout')))) {
+            // Adding error to log
             self::$_log = utf8_encode($errstr);
             Errors::add(utf8_encode($errstr));
+
             return false;
         }
 
-        # Sending Command ...
-        fwrite($handle, $command . "\r\n");
+        // Sending Command ...
+        fwrite($handle, $command."\r\n");
 
-        # Getting first line
+        // Getting first line
         $buffer = fgets($handle);
 
-        # Checking if result is valid
+        // Checking if result is valid
         if ($this->end($buffer, $command)) {
-            # Closing socket
+            // Closing socket
             fclose($handle);
 
-            # Adding error to log
+            // Adding error to log
             self::$_log = $buffer;
 
             return false;
         }
 
-        # Reading Results
-        while (! feof($handle)) {
-            # Getting line
+        // Reading Results
+        while (!feof($handle)) {
+            // Getting line
             $line = fgets($handle);
             $buffer .= $line;
 
-            # Checking for end of MemCache command
+            // Checking for end of MemCache command
             if ($this->end($line, $command)) {
                 break;
             }
         }
-        # Closing socket
+        // Closing socket
         fclose($handle);
 
         return $buffer;
@@ -113,24 +112,23 @@ class Server implements CommandInterface
      * Check if response is at the end from memcached server
      * Return true if response end, true otherwise
      *
-     * @param string $buffer Buffer received from memcached server
+     * @param string $buffer  Buffer received from memcached server
      * @param string $command Command issued to memcached server
-     *
-     * @return boolean
      */
     private function end(string $buffer, string $command): bool
     {
-        # incr or decr also return integer
-        if ((preg_match('/^(incr|decr)/', $command))) {
+        // incr or decr also return integer
+        if (preg_match('/^(incr|decr)/', $command)) {
             if (preg_match('/^(END|ERROR|SERVER_ERROR|CLIENT_ERROR|NOT_FOUND|[0-9]*)/', $buffer)) {
                 return true;
             }
         } else {
-            # Checking command response end
+            // Checking command response end
             if (preg_match('/^(END|DELETED|OK|ERROR|SERVER_ERROR|CLIENT_ERROR|NOT_FOUND|STORED|RESET|TOUCHED)/', $buffer)) {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -138,36 +136,35 @@ class Server implements CommandInterface
      * Parse result to make an array
      *
      * @param string $string (optional) Parsing stats ?
-     * @param bool $stats
-     * @return array
      */
     public function parse(string $string, bool $stats = true): array
     {
-        # Variable
-        $return = array();
+        // Variable
+        $return = [];
 
-        # Exploding by \r\n
+        // Exploding by \r\n
         $lines = explode("\r\n", $string);
 
-        # Stats
+        // Stats
         if ($stats) {
-            # Browsing each line
+            // Browsing each line
             foreach ($lines as $line) {
                 $data = explode(' ', $line);
                 if (isset($data[2])) {
                     $return[$data[1]] = $data[2];
                 }
             }
-        }         # Items
+        }         // Items
         else {
-            # Browsing each line
+            // Browsing each line
             foreach ($lines as $line) {
                 $data = explode(' ', $line);
                 if (isset($data[1])) {
-                    $return[$data[1]] = array(substr($data[2], 1), $data[4]);
+                    $return[$data[1]] = [substr($data[2], 1), $data[4]];
                 }
             }
         }
+
         return $return;
     }
 
@@ -176,16 +173,17 @@ class Server implements CommandInterface
      * Return the result if successful or false otherwise
      *
      * @param string $server Hostname
-     * @param integer $port Hostname Port
+     * @param int    $port   Hostname Port
      *
-     * @return array|boolean
+     * @return array|bool
      */
     public function stats($server, $port)
     {
-        # Executing command
-        if (($return = $this->exec('stats', $server, $port))) {
+        // Executing command
+        if ($return = $this->exec('stats', $server, $port)) {
             return $this->parse($return);
         }
+
         return false;
     }
 
@@ -194,16 +192,17 @@ class Server implements CommandInterface
      * Return the result if successful or false otherwise
      *
      * @param string $server Hostname
-     * @param integer $port Hostname Port
+     * @param int    $port   Hostname Port
      *
-     * @return array|boolean
+     * @return array|bool
      */
     public function settings($server, $port)
     {
-        # Executing command
-        if (($return = $this->exec('stats settings', $server, $port))) {
+        // Executing command
+        if ($return = $this->exec('stats settings', $server, $port)) {
             return $this->parse($return);
         }
+
         return false;
     }
 
@@ -212,33 +211,32 @@ class Server implements CommandInterface
      * Return the result if successful or false otherwise
      *
      * @param string $server Hostname
-     * @param integer $port Hostname Port
+     * @param int    $port   Hostname Port
      *
-     * @return array|boolean
+     * @return array|bool
      */
     public function slabs($server, $port)
     {
-        # Initializing
-        $slabs = array();
+        // Initializing
+        $slabs = [];
 
-        # Finding uptime
+        // Finding uptime
         $stats = $this->stats($server, $port);
         $slabs['uptime'] = $stats['uptime'];
         unset($stats);
 
         $slabs['classes'] = [];
 
-        # Executing command : slabs stats
+        // Executing command : slabs stats
         $result = $this->exec('stats slabs', $server, $port);
         if ($result) {
-            # Parsing result
+            // Parsing result
             $result = $this->parse($result);
             $slabs['active_slabs'] = $result['active_slabs'];
             $slabs['total_malloced'] = $result['total_malloced'];
-            unset($result['active_slabs']);
-            unset($result['total_malloced']);
+            unset($result['active_slabs'], $result['total_malloced']);
 
-            # Indexing by slabs
+            // Indexing by slabs
             foreach ($result as $key => $value) {
                 $key = explode(':', $key);
                 $slabs[$key[0]][$key[1]] = $value;
@@ -247,6 +245,7 @@ class Server implements CommandInterface
 
             return $slabs;
         }
+
         return false;
     }
 
@@ -255,62 +254,57 @@ class Server implements CommandInterface
      * Return the result if successful or false otherwise
      *
      * @param string $server Hostname
-     * @param integer $port Hostname Port
+     * @param int    $port   Hostname Port
      *
-     * @return array|boolean
+     * @return array|bool
      */
     public function slabsWithItems(string $server, int $port)
     {
-        # Initializing
-        $slabs = array();
+        // Initializing
+        $slabs = [];
 
-        # Finding uptime
+        // Finding uptime
         $stats = $this->stats($server, $port);
         $slabs['uptime'] = $stats['uptime'];
         unset($stats);
 
         $slabs['classes'] = [];
 
-        # Executing command : slabs stats
+        // Executing command : slabs stats
         $result = $this->exec('stats slabs', $server, $port);
         if ($result) {
-            # Parsing result
+            // Parsing result
             $result = $this->parse($result);
             $slabs['active_slabs'] = $result['active_slabs'];
             $slabs['total_malloced'] = $result['total_malloced'];
-            unset($result['active_slabs']);
-            unset($result['total_malloced']);
+            unset($result['active_slabs'], $result['total_malloced']);
 
-            # Indexing by slabs
+            // Indexing by slabs
             foreach ($result as $key => $value) {
                 $key = explode(':', $key);
                 $slabs[$key[0]][$key[1]] = $value;
                 $slabs['classes'][$key[0]] = $key[0];
             }
 
-            # Executing command : items stats
+            // Executing command : items stats
             $result = $this->exec('stats items', $server, $port);
             if ($result) {
-                # Parsing result
+                // Parsing result
                 $result = $this->parse($result);
 
-                # Indexing by slabs
+                // Indexing by slabs
                 foreach ($result as $key => $value) {
                     $key = explode(':', $key);
-                    $slabs[$key[1]]['items:' . $key[2]] = $value;
+                    $slabs[$key[1]]['items:'.$key[2]] = $value;
                 }
 
                 return $slabs;
             }
         }
+
         return false;
     }
 
-    /**
-     * @param string $hostname
-     * @param string $port
-     * @return array
-     */
     public function keys(string $hostname, string $port): array
     {
         $res = [];
@@ -324,7 +318,7 @@ class Server implements CommandInterface
                         $res[] = [
                             'name' => $slabKey,
                             'size' => $meta[0],
-                            'ttl' => $meta[1]
+                            'ttl' => $meta[1],
                         ];
                     }
                 }
@@ -334,6 +328,7 @@ class Server implements CommandInterface
                 if ($a['name'] === $b['name']) {
                     return 0;
                 }
+
                 return strcmp($a['name'], $b['name']) <= 0 ? -1 : 1;
             });
         }
@@ -346,21 +341,22 @@ class Server implements CommandInterface
      * Return the result if successful or false otherwise
      *
      * @param string $server Hostname
-     * @param integer $port Hostname Port
-     * @param integer $slab Slab ID
+     * @param int    $port   Hostname Port
+     * @param int    $slab   Slab ID
      *
-     * @return array|boolean
+     * @return array|bool
      */
     public function items($server, $port, $slab)
     {
-        # Initializing
+        // Initializing
         $items = false;
 
-        # Executing command : stats cachedump
-        if (($result = $this->exec('stats cachedump ' . $slab . ' ' . self::$_ini->get('max_item_dump'), $server, $port))) {
-            # Parsing result
+        // Executing command : stats cachedump
+        if ($result = $this->exec('stats cachedump '.$slab.' '.self::$_ini->get('max_item_dump'), $server, $port)) {
+            // Parsing result
             $items = $this->parse($result, false);
         }
+
         return $items;
     }
 
@@ -369,22 +365,22 @@ class Server implements CommandInterface
      * Return the result if successful or false otherwise
      *
      * @param string $server Hostname
-     * @param integer $port Hostname Port
-     * @param string $key Key to retrieve
-     *
-     * @return string|null
+     * @param int    $port   Hostname Port
+     * @param string $key    Key to retrieve
      */
     public function get($server, $port, $key): ?string
     {
-        # Executing command : get
-        $string = $this->exec("get $key", $server, $port);
+        // Executing command : get
+        $string = $this->exec("get {$key}", $server, $port);
         if ($string) {
-            $string = preg_replace('/^VALUE '. preg_quote($key, '/') .'[0-9 ]*\r\n/', null, $string);
-            if (ord($string[0]) === 0x78 && in_array(ord($string[1]), [0x01, 0x5e, 0x9c, 0xda])) {
+            $string = preg_replace('/^VALUE '.preg_quote($key, '/').'[0-9 ]*\r\n/', null, $string);
+            if (ord($string[0]) === 0x78 && in_array(ord($string[1]), [0x01, 0x5E, 0x9C, 0xDA])) {
                 return gzuncompress($string);
             }
+
             return preg_replace("/\r\nEND$/", null, rtrim($string));
         }
+
         return null;
     }
 
@@ -392,23 +388,24 @@ class Server implements CommandInterface
      * Set an item
      * Return the result
      *
-     * @param string $server Hostname
-     * @param integer $port Hostname Port
-     * @param string $key Key to store
-     * @param mixed $data Data to store
-     * @param integer $duration Duration
+     * @param string $server   Hostname
+     * @param int    $port     Hostname Port
+     * @param string $key      Key to store
+     * @param mixed  $data     Data to store
+     * @param int    $duration Duration
      *
      * @return string
      */
-    function set($server, $port, $key, $data, $duration)
+    public function set($server, $port, $key, $data, $duration)
     {
-        # Formatting data
+        // Formatting data
         $data = preg_replace('/\r/', null, $data);
 
-        # Executing command : set
-        if (($result = $this->exec('set ' . $key . ' 0 ' . $duration . ' ' . strlen($data) . "\r\n" . $data, $server, $port))) {
+        // Executing command : set
+        if ($result = $this->exec('set '.$key.' 0 '.$duration.' '.strlen($data)."\r\n".$data, $server, $port)) {
             return $result;
         }
+
         return self::$_log;
     }
 
@@ -417,17 +414,18 @@ class Server implements CommandInterface
      * Return true if successful, false otherwise
      *
      * @param string $server Hostname
-     * @param integer $port Hostname Port
-     * @param string $key Key to delete
+     * @param int    $port   Hostname Port
+     * @param string $key    Key to delete
      *
      * @return string
      */
     public function delete($server, $port, $key)
     {
-        # Executing command : delete
-        if (($result = $this->exec('delete ' . $key, $server, $port))) {
+        // Executing command : delete
+        if ($result = $this->exec('delete '.$key, $server, $port)) {
             return $result;
         }
+
         return self::$_log;
     }
 
@@ -436,18 +434,19 @@ class Server implements CommandInterface
      * Return the result
      *
      * @param string $server Hostname
-     * @param integer $port Hostname Port
-     * @param string $key Key to increment
-     * @param integer $value Value to increment
+     * @param int    $port   Hostname Port
+     * @param string $key    Key to increment
+     * @param int    $value  Value to increment
      *
      * @return string
      */
-    function increment($server, $port, $key, $value)
+    public function increment($server, $port, $key, $value)
     {
-        # Executing command : increment
-        if (($result = $this->exec('incr ' . $key . ' ' . $value, $server, $port))) {
+        // Executing command : increment
+        if ($result = $this->exec('incr '.$key.' '.$value, $server, $port)) {
             return $result;
         }
+
         return self::$_log;
     }
 
@@ -456,18 +455,19 @@ class Server implements CommandInterface
      * Return the result
      *
      * @param string $server Hostname
-     * @param integer $port Hostname Port
-     * @param string $key Key to decrement
-     * @param integer $value Value to decrement
+     * @param int    $port   Hostname Port
+     * @param string $key    Key to decrement
+     * @param int    $value  Value to decrement
      *
      * @return string
      */
-    function decrement($server, $port, $key, $value)
+    public function decrement($server, $port, $key, $value)
     {
-        # Executing command : decrement
-        if (($result = $this->exec('decr ' . $key . ' ' . $value, $server, $port))) {
+        // Executing command : decrement
+        if ($result = $this->exec('decr '.$key.' '.$value, $server, $port)) {
             return $result;
         }
+
         return self::$_log;
     }
 
@@ -476,17 +476,18 @@ class Server implements CommandInterface
      * Return the result
      *
      * @param string $server Hostname
-     * @param integer $port Hostname Port
-     * @param integer $delay Delay before flushing server
+     * @param int    $port   Hostname Port
+     * @param int    $delay  Delay before flushing server
      *
      * @return string
      */
-    function flush_all($server, $port, $delay)
+    public function flush_all($server, $port, $delay)
     {
-        # Executing command : flush_all
-        if (($result = $this->exec('flush_all ' . $delay, $server, $port))) {
+        // Executing command : flush_all
+        if ($result = $this->exec('flush_all '.$delay, $server, $port)) {
             return $result;
         }
+
         return self::$_log;
     }
 
@@ -495,58 +496,56 @@ class Server implements CommandInterface
      * Return all the items matching parameters if successful, false otherwise
      *
      * @param string $server Hostname
-     * @param integer $port Hostname Port
-     * @param $search
-     * @param bool $level Level of Detail
-     * @param bool $more More action
-     *
-     * @return array
+     * @param int    $port   Hostname Port
+     * @param mixed  $search
+     * @param bool   $level  Level of Detail
+     * @param bool   $more   More action
      */
-    function search($server, $port, $search, $level = false, $more = false): array
+    public function search($server, $port, $search, $level = false, $more = false): array
     {
-        $slabs = array();
+        $slabs = [];
         $items = false;
 
-        # Executing command : stats
+        // Executing command : stats
         if ($level === 'full' && ($result = $this->exec('stats', $server, $port))) {
-            # Parsing result
+            // Parsing result
             $result = $this->parse($result);
             $infinite = (isset($result['time'], $result['uptime'])) ? ($result['time'] - $result['uptime']) : 0;
         }
 
-        # Executing command : slabs stats
-        if (($result = $this->exec('stats slabs', $server, $port))) {
-            # Parsing result
+        // Executing command : slabs stats
+        if ($result = $this->exec('stats slabs', $server, $port)) {
+            // Parsing result
             $result = $this->parse($result);
-            unset($result['active_slabs']);
-            unset($result['total_malloced']);
-            # Indexing by slabs
+            unset($result['active_slabs'], $result['total_malloced']);
+
+            // Indexing by slabs
             foreach ($result as $key => $value) {
                 $key = explode(':', $key);
                 $slabs[$key[0]] = true;
             }
         }
 
-        # Exploring each slabs
+        // Exploring each slabs
         foreach ($slabs as $slab => $unused) {
-            # Executing command : stats cachedump
-            if (($result = $this->exec('stats cachedump ' . $slab . ' 0', $server, $port))) {
-                # Parsing result
+            // Executing command : stats cachedump
+            if ($result = $this->exec('stats cachedump '.$slab.' 0', $server, $port)) {
+                // Parsing result
                 preg_match_all(
-                    '/^ITEM ((?:.*)' . preg_quote($search, '/') . '(?:.*)) \[([0-9]*) b; ([0-9]*) s\]\r\n/imU',
+                    '/^ITEM ((?:.*)'.preg_quote($search, '/').'(?:.*)) \[([0-9]*) b; ([0-9]*) s\]\r\n/imU',
                     $result,
                     $matches,
                     PREG_SET_ORDER
                 );
                 foreach ($matches as $item) {
-                    # Search & Delete
+                    // Search & Delete
                     if ($more == 'delete') {
-                        $items[] = $item[1] . ' : ' . $this->delete($server, $port, $item[1]);
-                        # Basic search
+                        $items[] = $item[1].' : '.$this->delete($server, $port, $item[1]);
+                    // Basic search
                     } else {
-                        # Detail level
+                        // Detail level
                         if ($level == 'full') {
-                            $items[] = $item[1] . ' : [' . trim(Analysis::byteResize($item[2])) . 'b, expire in ' . (($item[3] == $infinite) ? '&#8734;' : Analysis::uptime($item[3] - time(), true)) . ']';
+                            $items[] = $item[1].' : ['.trim(Analysis::byteResize($item[2])).'b, expire in '.(($item[3] == $infinite) ? '&#8734;' : Analysis::uptime($item[3] - time(), true)).']';
                         } else {
                             $items[] = $item[1];
                         }
@@ -569,19 +568,20 @@ class Server implements CommandInterface
      * Execute a telnet command on a server
      * Return the result
      *
-     * @param string $server Hostname
-     * @param integer $port Hostname Port
+     * @param string $server  Hostname
+     * @param int    $port    Hostname Port
      * @param string $command Command to execute
      *
      * @return string
      */
-    function telnet($server, $port, $command)
+    public function telnet($server, $port, $command)
     {
-        # Executing command
+        // Executing command
         $result = $this->exec($command, $server, $port);
         if ($result) {
             return $result;
         }
+
         return self::$_log;
     }
 }
