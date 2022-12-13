@@ -95,7 +95,7 @@ class Memcached implements CommandInterface
      * @param string $server Hostname
      * @param int    $port   Hostname Port
      *
-     * @return array|bool
+     * @return never
      *
      * @throws \Exception
      */
@@ -112,7 +112,7 @@ class Memcached implements CommandInterface
      * @param int    $port   Hostname Port
      * @param int    $slab   Slab ID
      *
-     * @return array|bool
+     * @return never
      *
      * @throws \Exception
      */
@@ -272,7 +272,7 @@ class Memcached implements CommandInterface
      * @param bool   $level
      * @param bool   $more
      *
-     * @return array
+     * @return never
      *
      * @throws \Exception
      */
@@ -289,7 +289,7 @@ class Memcached implements CommandInterface
      * @param int    $port    Hostname Port
      * @param string $command Command to execute
      *
-     * @return string
+     * @return never
      *
      * @throws \Exception
      */

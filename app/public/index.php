@@ -28,7 +28,7 @@ use App\Library\Data\Analysis;
 require_once __DIR__.'/../bootstrap.php';
 
 // Initializing requests
-$request = (isset($_REQUEST['show'])) ? $_REQUEST['show'] : null;
+$request = $_REQUEST['show'] ?? null;
 
 // Getting default cluster
 if (!isset($_REQUEST['server'])) {

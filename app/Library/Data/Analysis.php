@@ -331,7 +331,7 @@ class Analysis
 
         // Resizing
         foreach ($units as $unit) {
-            if ($value < 10000000) {
+            if ($value < 10_000_000) {
                 break;
             }
             $value /= 1000;

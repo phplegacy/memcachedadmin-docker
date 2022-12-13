@@ -28,7 +28,7 @@ use App\Library\Html\Components;
 require_once __DIR__.'/../../bootstrap.php';
 
 // Initializing requests & response
-$request = (isset($_REQUEST['request_command'])) ? $_REQUEST['request_command'] : null;
+$request = $_REQUEST['request_command'] ?? null;
 
 // Starting
 ob_start();

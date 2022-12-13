@@ -49,7 +49,7 @@ class Errors
      */
     public static function last()
     {
-        return (isset(self::$_errors[count(self::$_errors) - 1])) ? self::$_errors[count(self::$_errors) - 1] : null;
+        return self::$_errors[count(self::$_errors) - 1] ?? null;
     }
 
     /**

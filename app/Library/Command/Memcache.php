@@ -302,7 +302,7 @@ class Memcache implements CommandInterface
      * @param bool   $level
      * @param bool   $more
      *
-     * @return array
+     * @return never
      *
      * @throws \Exception
      */
@@ -319,7 +319,7 @@ class Memcache implements CommandInterface
      * @param int    $port    Hostname Port
      * @param string $command Command to execute
      *
-     * @return string
+     * @return never
      *
      * @throws \Exception
      */
