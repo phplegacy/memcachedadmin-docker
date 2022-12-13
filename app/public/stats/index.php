@@ -30,7 +30,7 @@ use App\Library\Data\Errors;
 require_once __DIR__.'/../../bootstrap.php';
 
 // Initializing requests
-$request = (isset($_REQUEST['request_command'])) ? $_REQUEST['request_command'] : null;
+$request = $_REQUEST['request_command'] ?? null;
 
 // Stat of a particular cluster
 if (isset($_REQUEST['cluster']) && ($_REQUEST['cluster'] != null)) {
@@ -66,10 +66,10 @@ if (!isset($_COOKIE['live_stats_id'.$hash])) {
     }
 
     // Generating unique id
-    $live_stats_id = rand().$hash;
+    $live_stats_id = random_int(0, mt_getrandmax()).$hash;
 
     // Cookie
-    setcookie('live_stats_id'.$hash, $live_stats_id, time() + 60 * 60 * 24);
+    setcookie('live_stats_id'.$hash, $live_stats_id, ['expires' => time() + 60 * 60 * 24]);
 } else {
     // Backup from a previous request
     $live_stats_id = $_COOKIE['live_stats_id'.$hash];

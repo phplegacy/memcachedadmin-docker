@@ -35,7 +35,7 @@ class Version
     protected static $_latest = 'https://blog.elijaa.org/public/latest';
 
     /** @var int Time between HTTP check */
-    protected static $_time = 1296000; // 15 days
+    protected static $_time = 1_296_000; // 15 days
 
     /**
      * Check for the latest version, from local cache or via http

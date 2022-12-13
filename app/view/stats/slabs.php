@@ -88,7 +88,7 @@ foreach ($slabs as $id => $slab) {
 if ($slab['used_chunks'] > 0) { ?>
                 <div class="line">
                     <span class="left slabs">Evicted</span>
-                    <?php echo (isset($slab['items:evicted'])) ? $slab['items:evicted'] : 'N/A'; ?>
+                    <?php echo $slab['items:evicted'] ?? 'N/A'; ?>
                 </div>
 <!--
                 <div class="line">

@@ -250,7 +250,7 @@ if ((isset($_REQUEST['server'])) && $_ini->server($_REQUEST['server'])) { ?>
             </div>
             <div class="line">
                 <span class="left setting help" title="Internal name : maxconns&#013;Maximum number of clients allowed">Max Connection</span>
-                <?php echo (isset($settings['maxconns'])) ? $settings['maxconns'] : 'N/A on '.$stats['version']; ?>
+                <?php echo $settings['maxconns'] ?? 'N/A on '.$stats['version']; ?>
             </div>
             <div class="line">
                 <span class="left setting help" title="Internal name : tcpport &amp; udpport&#013;TCP &amp; UDP listen port">TCP/UDP Port</span>
@@ -258,7 +258,7 @@ if ((isset($_REQUEST['server'])) && $_ini->server($_REQUEST['server'])) { ?>
             </div>
             <div class="line">
                 <span class="left setting help" title="Internal name : inter&#013;Listen interface">Listen Interface</span>
-                <?php echo (isset($settings['inter'])) ? $settings['inter'] : 'N/A on '.$stats['version']; ?>
+                <?php echo $settings['inter'] ?? 'N/A on '.$stats['version']; ?>
             </div>
             <div class="line">
                 <span class="left setting help" title="Internal name : evictions&#013;When Off, LRU evictions are disabled">Evictions</span>
@@ -266,23 +266,23 @@ if ((isset($_REQUEST['server'])) && $_ini->server($_REQUEST['server'])) { ?>
             </div>
             <div class="line">
                 <span class="left setting help" title="Internal name : domain_socket&#013;Path to the domain socket (if any)">Path to Domain Socket</span>
-                <?php echo (isset($settings['domain_socket'])) ? $settings['domain_socket'] : 'N/A on '.$stats['version']; ?>
+                <?php echo $settings['domain_socket'] ?? 'N/A on '.$stats['version']; ?>
             </div>
             <div class="line">
                 <span class="left setting help" title="Internal name : umask&#013;Umask for the creation of the domain socket">Domain Socket Umask</span>
-                <?php echo (isset($settings['umask'])) ? $settings['umask'] : 'N/A on '.$stats['version']; ?>
+                <?php echo $settings['umask'] ?? 'N/A on '.$stats['version']; ?>
             </div>
             <div class="line">
                 <span class="left setting help" title="Internal name : chunk_size&#013;Minimum space allocated for key + value + flags">Chunk Size</span>
-                <?php echo (isset($settings['chunk_size'])) ? $settings['chunk_size'] : 'N/A on '.$stats['version']; ?>
+                <?php echo $settings['chunk_size'] ?? 'N/A on '.$stats['version']; ?>
             </div>
             <div class="line">
                 <span class="left setting help" title="Internal name : growth_factor&#013;Chunk size growth factor">Chunk Growth Factor</span>
-                <?php echo (isset($settings['growth_factor'])) ? $settings['growth_factor'] : 'N/A on '.$stats['version']; ?>
+                <?php echo $settings['growth_factor'] ?? 'N/A on '.$stats['version']; ?>
             </div>
             <div class="line">
                 <span class="left setting help" title="Internal name : num_threads&#013;Number of threads (including dispatch)">Max Threads</span>
-                <?php echo (isset($settings['num_threads'])) ? $settings['num_threads'] : 'N/A on '.$stats['version']; ?>
+                <?php echo $settings['num_threads'] ?? 'N/A on '.$stats['version']; ?>
             </div>
             <div class="line">
                 <span class="left setting help" title="Internal name : detail_enabled&#013;If yes, stats detail is enabled">Detail Enabled</span>
@@ -290,7 +290,7 @@ if ((isset($_REQUEST['server'])) && $_ini->server($_REQUEST['server'])) { ?>
             </div>
             <div class="line">
                 <span class="left setting help" title="Internal name : reqs_per_event&#013;Max num IO ops processed within an event">Max IO Ops/Event</span>
-                <?php echo (isset($settings['reqs_per_event'])) ? $settings['reqs_per_event'] : 'N/A on '.$stats['version']; ?>
+                <?php echo $settings['reqs_per_event'] ?? 'N/A on '.$stats['version']; ?>
             </div>
             <div class="line">
                 <span class="left setting help" title="Internal name : cas_enabled&#013;When no, CAS is not enabled for this server">CAS Enabled</span>
@@ -298,7 +298,7 @@ if ((isset($_REQUEST['server'])) && $_ini->server($_REQUEST['server'])) { ?>
             </div>
             <div class="line">
                 <span class="left setting help" title="Internal name : tcp_backlog&#013;TCP listen backlog">TCP Listen Backlog</span>
-                <?php echo (isset($settings['tcp_backlog'])) ? $settings['tcp_backlog'] : 'N/A on '.$stats['version']; ?>
+                <?php echo $settings['tcp_backlog'] ?? 'N/A on '.$stats['version']; ?>
             </div>
             <div class="line">
                 <span class="left setting help" title="Internal name : auth_enabled_sasl&#013;SASL auth requested and enabled">SASL Auth</span>
