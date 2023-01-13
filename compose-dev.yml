@@ -1,11 +1,10 @@
-version: "3"
-
 services:
   memcachedadmin:
     container_name: 'memcachedadmin'
     build:
       dockerfile: ./docker/Dockerfile
       context: ./
+      target: php-dev
       args:
         - BUILDKIT_INLINE_CACHE=1
     tty: true

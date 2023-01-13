@@ -1,6 +1,6 @@
 # Dev environment image
-# docker build --pull --tag php-70 --build-arg BUILDKIT_INLINE_CACHE=1 --file ./docker/images/php/Dockerfile ./ && docker run -it --rm php-70
-FROM php:7.4-fpm-alpine
+# docker build --pull --tag php-70 --build-arg BUILDKIT_INLINE_CACHE=1 --target php-prod --file ./docker/images/php/Dockerfile ./ && docker run -it --rm php-70
+FROM php:7.4-fpm-alpine as php-dev
 
 ENV TERM="xterm-256color" \
 LANGUAGE="en_US.UTF-8" \
@@ -92,12 +92,14 @@ ENV PHP_CS_FIXER_FUTURE_MODE=1
 
 USER user
 
-COPY ./app/ /app/
-RUN set -eux \
-    && composer install --prefer-dist --no-interaction --no-dev --no-progress --optimize-autoloader
-
 # entrypoint init
 COPY --chmod=0755 ./docker/etc/docker-entrypoint.sh /docker-entrypoint.sh
 ENTRYPOINT ["tini", "--", "/docker-entrypoint.sh"]
 CMD ["php-fpm"]
 EXPOSE 80
+
+FROM php-dev as php-prod
+
+COPY ./app/ /app/
+RUN set -eux \
+    && composer install --prefer-dist --no-interaction --no-dev --no-progress --optimize-autoloader
