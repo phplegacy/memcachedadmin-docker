@@ -43,7 +43,7 @@ jobs:
           cache-to: type=gha, scope=${{ github.workflow }}, mode=max
           context: .
           file: ./docker/Dockerfile
-          target: php-dev
+          target: php-prod
           build-args: |
             BUILD_DATE=${{ env.BUILD_DATE }}
             BUILD_FINGERPRINT=${{ env.BUILD_FINGERPRINT }}
