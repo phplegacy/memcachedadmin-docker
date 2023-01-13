@@ -1,4 +1,4 @@
-name: CI
+name: Build [latest] docker image
 
 # Controls when the workflow will run
 on:
@@ -6,8 +6,8 @@ on:
   push:
     branches: [ master ]
 
-#  schedule:
-#    - cron: "0 0 * * 6"
+  schedule:
+    - cron: "0 0 * * 6"
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -57,7 +57,7 @@ jobs:
             BUILD_FINGERPRINT=${{ env.BUILD_FINGERPRINT }}
           tags: |
             legacyphp/memcachedadmin:latest
-            ghcr.io/phplegacy/memcachedadmin-docker:latest
+            ghcr.io/phplegacy/memcachedadmin:latest
           pull: true
           push: true
 
