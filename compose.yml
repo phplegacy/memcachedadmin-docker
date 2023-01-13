@@ -1,5 +1,3 @@
-version: "3"
-
 services:
   memcachedadmin:
     container_name: 'memcachedadmin'

@@ -1,20 +1,9 @@
-name: CI
+name: Build docker images
 
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the master branch
-  push:
-    branches: [ master ]
+  workflow_call:
 
-#  schedule:
-#    - cron: "0 0 * * 6"
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-
   build:
     name: Build, test and publish
     runs-on: ubuntu-latest
@@ -56,24 +45,6 @@ jobs:
             BUILD_DATE=${{ env.BUILD_DATE }}
             BUILD_FINGERPRINT=${{ env.BUILD_FINGERPRINT }}
           tags: |
-            legacyphp/memcachedadmin:latest
-            ghcr.io/phplegacy/memcachedadmin-docker:latest
+            ghcr.io/phplegacy/memcachedadmin:develop
           pull: true
           push: true
-
-
-  Update-Docker-Hub-repo-description:
-    name: Update Docker Hub repo description
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v3
-
-      - name: Update Docker Hub repo description
-        uses: peter-evans/dockerhub-description@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
-          repository: legacyphp/memcachedadmin
-          #short-description: ${{ github.event.repository.description }}
