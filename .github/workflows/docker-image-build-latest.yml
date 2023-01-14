@@ -58,7 +58,7 @@ jobs:
             BUILD_FINGERPRINT=${{ env.BUILD_FINGERPRINT }}
           tags: |
             legacyphp/memcachedadmin:latest
-            ghcr.io/phplegacy/memcachedadmin:latest
+            ghcr.io/phplegacy/memcachedadmin-docker:latest
           pull: true
           push: true
 

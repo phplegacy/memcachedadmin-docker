@@ -48,6 +48,6 @@ jobs:
             BUILD_DATE=${{ env.BUILD_DATE }}
             BUILD_FINGERPRINT=${{ env.BUILD_FINGERPRINT }}
           tags: |
-            ghcr.io/phplegacy/memcachedadmin:develop
+            ghcr.io/phplegacy/memcachedadmin-docker:develop
           pull: true
           push: true
